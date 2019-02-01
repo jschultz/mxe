@@ -1,0 +1,11 @@
+--- a/configure.ac	2018-12-04 20:56:06.000000000 +0000
++++ b/configure.ac	2019-02-01 10:24:39.907699585 +0000
+@@ -852,7 +852,7 @@
+     enable_documentation=yes
+     AC_SUBST(MAKEINFO)
+   else
+-    if test "x$enable_documentation" == "xauto" ; then
++    if test "x$enable_documentation" = "xauto" ; then
+       enable_documentation=no
+     else
+       AC_MSG_ERROR([Cannot find 'makeinfo', required for documentation.])
