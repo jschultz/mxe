@@ -1,0 +1,11 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -75,7 +75,7 @@
+ ])
+ AC_SUBST(WARN_CFLAGS)
+ 
+-PKG_CHECK_MODULES(GLIB, [gmodule-2.0 gio-unix-2.0 >= 2.30.0])
++PKG_CHECK_MODULES(GLIB, [gmodule-2.0 gio-windows-2.0 >= 2.30.0])
+ AC_SUBST(GLIB_CFLAGS)
+ AC_SUBST(GLIB_LIBS)
+ 
