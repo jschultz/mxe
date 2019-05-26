@@ -1,0 +1,14 @@
+--- a/configure   2019-05-26 05:13:01.106975148 +0000
++++ b/configure   2019-05-26 05:14:22.529783914 +0000
+@@ -238,8 +238,8 @@
+              SHAREDLIBV=libz.$VER$shared_ext
+              SHAREDLIBM=libz.$VER1$shared_ext
+              LDSHARED=${LDSHARED-"$cc -dynamiclib -install_name $libdir/$SHAREDLIBM -compatibility_version $VER1 -current_version $VER3"}
+-             if libtool -V 2>&1 | grep Apple > /dev/null; then
+-                 AR="libtool"
++             if ${CROSS_PREFIX}libtool -V 2>&1 | grep Apple > /dev/null; then
++                 AR="${CROSS_PREFIX}libtool"
+              else
+                  AR="/usr/bin/libtool"
+              fi
+
