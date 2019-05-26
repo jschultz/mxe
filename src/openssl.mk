@@ -25,8 +25,8 @@ define $(PKG)_BUILD
     rm -fv '$(PREFIX)/$(TARGET)/'*/{libcrypto*,libssl*}
     rm -fv '$(PREFIX)/$(TARGET)/lib/pkgconfig/'{libcrypto*,libssl*,openssl*}
 
-    cd '$(1)' && CC='$(TARGET)-gcc' RC='$(TARGET)-windres' ./Configure \
-        @openssl-target@ \
+    cd '$(1)' && CC='$(TARGET)-gcc' ./Configure \
+	darwin64-x86_64-cc \
         zlib \
         $(if $(BUILD_STATIC),no-,)shared \
         no-capieng \
@@ -35,7 +35,6 @@ define $(PKG)_BUILD
         CC='$(TARGET)-gcc' \
         RANLIB='$(TARGET)-ranlib' \
         AR='$(TARGET)-ar' \
-        RC='$(TARGET)-windres' \
         CROSS_COMPILE='$(TARGET)-' \
         $(if $(BUILD_SHARED), ENGINESDIR='$(PREFIX)/$(TARGET)/bin/engines')
 endef

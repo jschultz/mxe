@@ -8,11 +8,11 @@ EXT_DIR  := $(TOP_DIR)/ext
 # See docs/gmsl.html for further information
 include $(EXT_DIR)/gmsl
 
-MXE_TRIPLETS       := i686-w64-mingw32 x86_64-w64-mingw32
+MXE_TRIPLETS       := i686-w64-mingw32 x86_64-w64-mingw32 x86_64-apple-darwin15
 MXE_LIB_TYPES      := static shared
 MXE_TARGET_LIST    := $(strip $(foreach TRIPLET,$(MXE_TRIPLETS),\
                           $(addprefix $(TRIPLET).,$(MXE_LIB_TYPES))))
-MXE_TARGETS        := i686-w64-mingw32.static
+MXE_TARGETS        := x86_64-apple-darwin15
 .DEFAULT_GOAL      := all-filtered
 
 DEFAULT_MAX_JOBS   := 6
@@ -113,6 +113,7 @@ MXE_GCC_THREADS = \
 # default (first item) and alternate, revisit if gcc/mingw-w64 change defaults
 i686-w64-mingw32_EH   := sjlj dw2
 x86_64-w64-mingw32_EH := seh sjlj
+x86_64-apple-darwin15_EH := seh sjlj
 
 # functions to determine exception handling from user-specified target
 # $(or $(TARGET),$(1)) allows use as both function and inline snippet
