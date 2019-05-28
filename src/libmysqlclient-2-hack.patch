@@ -1,0 +1,11 @@
+--- a/cmake/libutils.cmake.bak	2015-02-25 21:09:49.000000000 +0000
++++ b/cmake/libutils.cmake	2019-05-28 13:35:16.755049573 +0000
+@@ -189,7 +189,7 @@
+       # binaries properly)
+       ADD_CUSTOM_COMMAND(TARGET ${TARGET} POST_BUILD
+         COMMAND rm ${TARGET_LOCATION}
+-        COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION} 
++        COMMAND /home/kdedev/osxcross/target/bin/x86_64-apple-darwin15-libtool -static -o ${TARGET_LOCATION} 
+         ${STATIC_LIBS}
+       )  
+     ELSE()

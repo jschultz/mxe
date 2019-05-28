@@ -60,10 +60,10 @@ set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES @PREFIX@/@TARGET@/include)
 
 
 ## Programs
-set(CMAKE_C_COMPILER @PREFIX@/bin/@TARGET@-gcc)
-set(CMAKE_CXX_COMPILER @PREFIX@/bin/@TARGET@-g++)
-set(CMAKE_Fortran_COMPILER @PREFIX@/bin/@TARGET@-gfortran)
-set(CMAKE_RC_COMPILER @PREFIX@/bin/@TARGET@-windres)
+set(CMAKE_C_COMPILER @TARGET@-gcc)
+set(CMAKE_CXX_COMPILER @TARGET@-g++)
+set(CMAKE_Fortran_COMPILER @TARGET@-gfortran)
+set(CMAKE_RC_COMPILER bin/@TARGET@-windres)
 # CMAKE_RC_COMPILE_OBJECT is defined in:
 #     <cmake root>/share/cmake-X.Y/Modules/Platform/Windows-windres.cmake
 set(CPACK_NSIS_EXECUTABLE @TARGET@-makensis)

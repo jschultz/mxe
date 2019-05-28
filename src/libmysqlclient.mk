@@ -25,12 +25,16 @@ define $(PKG)_BUILD
     $(MAKE) -C '$(1).native' -j '$(JOBS)' VERBOSE=1
     # cross-compilation
     mkdir '$(1).build'
-    cd '$(1).build' && '$(TARGET)-cmake' \
+    cd '$(1).build' && '/home/kdedev/osxcross/target/bin/$(TARGET)-cmake' \
         -DIMPORT_COMP_ERR='$(1).native/ImportCompErr.cmake' \
         -DHAVE_GCC_ATOMIC_BUILTINS=1 \
         -DDISABLE_SHARED=$(CMAKE_STATIC_BOOL) \
         -DENABLE_DTRACE=OFF \
         -DWITH_ZLIB=system \
+        -DSTACK_DIRECTION=-1 \
+        -DHAVE_IMPLICIT_DEPENDENT_NAME_TYPING=1 \
+        -DHAVE_LLVM_LIBCPP_EXITCODE=1 \
+	LIBTOOL=$(TARGET)-libtool \
         '$(1)'
 
     # def file created by cmake creates link errors

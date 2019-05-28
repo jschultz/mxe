@@ -97,12 +97,15 @@ define $(PKG)_BUILD
     cd '$(SOURCE_DIR)' && NOCONFIGURE=true ./autogen.sh
     cd '$(BUILD_DIR)' && '$(SOURCE_DIR)/configure' \
         $(MXE_CONFIGURE_OPTS) \
-        --with-threads=win32 \
+        --with-threads=posix \
         --with-pcre=system \
         --with-libiconv=gnu \
         --disable-inotify \
-        CXX='$(TARGET)-g++' \
+        CC='$(TARGET)-clang' \
+        CXX='$(TARGET)-clang++' \
         PKG_CONFIG='$(PREFIX)/bin/$(TARGET)-pkg-config' \
+        CPPFLAGS='-I$(PREFIX)/$(TARGET)/include' \
+        LDFLAGS='-L$(PREFIX)/$(TARGET)/lib' \
         GLIB_GENMARSHAL='$(PREFIX)/$(TARGET)/bin/glib-genmarshal' \
         GLIB_COMPILE_SCHEMAS='$(PREFIX)/$(TARGET)/bin/glib-compile-schemas' \
         GLIB_COMPILE_RESOURCES='$(PREFIX)/$(TARGET)/bin/glib-compile-resources'

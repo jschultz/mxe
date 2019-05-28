@@ -3,7 +3,6 @@
  */
 
 #include <stdio.h>
-#include <windows.h>
 #include <jpeglib.h>
 
 int main(int argc, char *argv[])

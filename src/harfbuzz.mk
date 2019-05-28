@@ -22,8 +22,9 @@ define $(PKG)_BUILD
     # mman-win32 is only a partial implementation
     cd '$(1)' && ./configure \
         $(MXE_CONFIGURE_OPTS) \
-        ac_cv_header_sys_mman_h=no \
-        CXXFLAGS='-std=c++11' \
+        CXXFLAGS='-std=c++11 -I$(PREFIX)/$(TARGET)/include' \
+        CFLAGS='-I$(PREFIX)/$(TARGET)/include' \
+	LDFLAGS='-L$(PREFIX)/$(TARGET)/lib' \
         LIBS='-lstdc++'
     $(MAKE) -C '$(1)' -j '$(JOBS)' install
 endef

@@ -23,6 +23,8 @@ define $(PKG)_BUILD
 
     '$(TARGET)-gcc' \
         -W -Wall -Werror -ansi -pedantic \
+	-I$(PREFIX)/$(TARGET)/include \
+	-L$(PREFIX)/$(TARGET)/lib \
         '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-jpeg.exe' \
         `'$(TARGET)-pkg-config' libjpeg --libs`
 endef

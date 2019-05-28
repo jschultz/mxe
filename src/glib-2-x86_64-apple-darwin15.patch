@@ -1,0 +1,17 @@
+--- a/configure.ac	2019-05-27 01:41:38.406575632 +0000
++++ b/configure.ac	2019-05-27 01:50:01.856843414 +0000
+@@ -151,6 +151,13 @@
+     glib_pid_type=int
+     glib_pid_format='i'
+     glib_pollfd_format='%d'
++    case "$host" in
++    *-darwin*)
++      glib_cv_stack_grows=no
++      glib_cv_uscore=no
++      ;;
++    esac
++
+     ;;
+ esac
+ case $host in
+ 
