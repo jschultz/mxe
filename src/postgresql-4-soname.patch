@@ -1,0 +1,14 @@
+--- a/src/Makefile.shlib	2019-06-08 23:56:21.571212838 +0000
++++ b/src/Makefile.shlib	2019-06-08 23:59:14.036167706 +0000
+@@ -85,10 +85,10 @@
+ shlib		= lib$(NAME)$(DLSUFFIX).$(SO_MAJOR_VERSION).$(SO_MINOR_VERSION)
+ shlib_major	= lib$(NAME)$(DLSUFFIX).$(SO_MAJOR_VERSION)
+ shlib_bare	= lib$(NAME)$(DLSUFFIX)
+-endif
+ # Testing the soname variable is a reliable way to determine whether a
+ # linkable library is being built.
+ soname		= $(shlib_major)
++endif
+ else
+ # Naming convention for dynamically loadable modules
+ ifeq ($(enable_shared), yes)

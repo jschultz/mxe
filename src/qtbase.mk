@@ -33,7 +33,7 @@ define $(PKG)_BUILD
         ./configure \
             -opensource \
             -confirm-license \
-            -xplatform win32-g++ \
+            -xplatform darwin-g++ \
             -device-option CROSS_COMPILE=${TARGET}- \
             -device-option PKG_CONFIG='${TARGET}-pkg-config' \
             -pkg-config \

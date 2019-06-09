@@ -32,6 +32,7 @@ define $(PKG)_BUILD
     # test cmake
     mkdir '$(1).test-cmake'
     cd '$(1).test-cmake' && '$(TARGET)-cmake' \
+        -DCMAKE_INSTALL_PREFIX='$(PREFIX)/$(TARGET)' \
         -DPKG=$(PKG) \
         '$(PWD)/src/cmake/test'
     $(MAKE) -C '$(1).test-cmake' -j 1 install

@@ -26,6 +26,7 @@ define $(PKG)_BUILD
     # cross-compilation
     mkdir '$(1).build'
     cd '$(1).build' && '/home/kdedev/osxcross/target/bin/$(TARGET)-cmake' \
+        -DCMAKE_INSTALL_PREFIX='$(PREFIX)/$(TARGET)' \
         -DIMPORT_COMP_ERR='$(1).native/ImportCompErr.cmake' \
         -DHAVE_GCC_ATOMIC_BUILTINS=1 \
         -DDISABLE_SHARED=$(CMAKE_STATIC_BOOL) \
@@ -34,6 +35,7 @@ define $(PKG)_BUILD
         -DSTACK_DIRECTION=-1 \
         -DHAVE_IMPLICIT_DEPENDENT_NAME_TYPING=1 \
         -DHAVE_LLVM_LIBCPP_EXITCODE=1 \
+        -DHAVE_LLVM_LIBCPP_EXITCODE__TRYRUN_OUTPUT=1 \
 	LIBTOOL=$(TARGET)-libtool \
         '$(1)'
 
@@ -54,7 +56,7 @@ define $(PKG)_BUILD
 
     # build test with mysql_config
     '$(TARGET)-g++' \
-        -W -Wall -Werror -ansi -pedantic \
+        -W -Wall -Werror -std=c++11 -pedantic \
         '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
         `'$(PREFIX)/$(TARGET)/bin/mysql_config' --cflags --libs`
 endef

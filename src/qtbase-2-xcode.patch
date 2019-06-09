@@ -1,0 +1,9 @@
+--- a/mkspecs/darwin-g++/qmake.conf	2018-12-03 11:15:26.000000000 +0000
++++ b/mkspecs/darwin-g++/qmake.conf	2019-06-08 11:04:46.167600218 +0000
+@@ -86,4 +86,6 @@
+ QMAKE_CXXFLAGS_PRECOMPILE += -x objective-c++-header -c ${QMAKE_PCH_INPUT} -o ${QMAKE_PCH_OUTPUT}
+ QMAKE_CXXFLAGS_USE_PRECOMPILE = $$QMAKE_CFLAGS_USE_PRECOMPILE
+ 
++QMAKE_XCODE_DEVELOPER_PATH = /Developer
++
+ load(qt_config)
