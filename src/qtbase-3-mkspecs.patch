@@ -5,11 +5,11 @@
  include(../common/unix.conf)
  
 -QMAKE_COMPILER          = gcc
-+CROSS_COMPILE           = x86_64-apple-darwin15-
++CROSS_COMPILE           = x86_64-apple-darwin18-
 +QMAKE_MAC_SDK           = macosx
-+QMAKE_MAC_SDK_VERSION   = ${sdk_version}
++QMAKE_MAC_SDK_VERSION   = $${sdk_version}
 +device.deployment_identifier = macosx
-+QMAKE_MACOSX_DEPLOYMENT_TARGET = ${deployment_target}
++QMAKE_MACOSX_DEPLOYMENT_TARGET = $${deployment_target}
  
 -QMAKE_CC                = cc
 +QMAKE_COMPILER          = $${CROSS_COMPILE}gcc

@@ -1,0 +1,11 @@
+--- a/configure.ac	2019-06-11 06:47:48.684240576 +0000
++++ b/configure.ac	2019-06-11 06:55:31.662724180 +0000
+@@ -237,7 +237,7 @@
+   LDFLAGS="$LDFLAGS $COCOA_LIBS"
+ 
+   osx_version=`sw_vers -productVersion`
+-  osx_min_version="10.9.0"
++  osx_min_version="10.9"
+   AC_MSG_CHECKING([OSX version >= $osx_min_version])
+   AS_VERSION_COMPARE([$osx_version], [$osx_min_version], [
+     AC_MSG_RESULT([no])

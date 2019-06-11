@@ -13,6 +13,10 @@ $(PKG)_DEPS     := cc dbus fontconfig freetds freetype harfbuzz jpeg libmysqlcli
 $(PKG)_DEPS_$(BUILD) :=
 $(PKG)_TARGETS  := $(BUILD) $(MXE_TARGETS)
 
+# OSX stuff
+SDK_VERSION       := 10.14
+DEPLOYMENT_TARGET := 10.9
+
 define $(PKG)_UPDATE
     $(WGET) -q -O- https://download.qt.io/official_releases/qt/5.8/ | \
     $(SED) -n 's,.*href="\(5\.[0-9]\.[^/]*\)/".*,\1,p' | \
@@ -66,12 +70,12 @@ define $(PKG)_BUILD
             -no-pch \
             -v \
             QMAKE_APPLE_DEVICE_ARCHS="x86_64" \
-            -sdk macosx$(sdk_version) \
-            QMAKE_MAC_SDK_PATH=$(HOME)/osxcross/target/SDK/MacOSX$(sdk_version).sdk \
-            QMAKE_MAC_SDK_VERSION=$(sdk_version) \
-            QMAKE_MACOSX_DEPLOYMENT_TARGET=$(deployment_target) \
-            -I /home/kdedev/mxe/usr/x86_64-apple-darwin15/include \
-            -L /home/kdedev/mxe/usr/x86_64-apple-darwin15/lib \
+            -sdk macosx$(SDK_VERSION) \
+            QMAKE_MAC_SDK_PATH=$(HOME)/osxcross/target/SDK/MacOSX$(SDK_VERSION).sdk \
+            QMAKE_MAC_SDK_VERSION=$(SDK_VERSION) \
+            QMAKE_MACOSX_DEPLOYMENT_TARGET=$(DEPLOYMENT_TARGET) \
+            -I /home/kdedev/mxe/usr/x86_64-apple-darwin18/include \
+            -L /home/kdedev/mxe/usr/x86_64-apple-darwin18/lib \
             $($(PKG)_CONFIGURE_OPTS)
 
     $(MAKE) -C '$(1)' -j '$(JOBS)'

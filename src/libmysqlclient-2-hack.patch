@@ -5,7 +5,7 @@
        ADD_CUSTOM_COMMAND(TARGET ${TARGET} POST_BUILD
          COMMAND rm ${TARGET_LOCATION}
 -        COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION} 
-+        COMMAND /home/kdedev/osxcross/target/bin/x86_64-apple-darwin15-libtool -static -o ${TARGET_LOCATION} 
++        COMMAND /home/kdedev/osxcross/target/bin/x86_64-apple-darwin18-libtool -static -o ${TARGET_LOCATION} 
          ${STATIC_LIBS}
        )  
      ELSE()
