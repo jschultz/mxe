@@ -66,10 +66,10 @@ define $(PKG)_BUILD
             -no-pch \
             -v \
             QMAKE_APPLE_DEVICE_ARCHS="x86_64" \
-            -sdk macosx10.11 \
-            QMAKE_MAC_SDK_PATH=${HOME}/osxcross/target/SDK/MacOSX10.11.sdk \
-            QMAKE_MAC_SDK_VERSION=10.11 \
-            QMAKE_MACOSX_DEPLOYMENT_TARGET=10.9 \
+            -sdk macosx$(sdk_version) \
+            QMAKE_MAC_SDK_PATH=$(HOME)/osxcross/target/SDK/MacOSX$(sdk_version).sdk \
+            QMAKE_MAC_SDK_VERSION=$(sdk_version) \
+            QMAKE_MACOSX_DEPLOYMENT_TARGET=$(deployment_target) \
             -I /home/kdedev/mxe/usr/x86_64-apple-darwin15/include \
             -L /home/kdedev/mxe/usr/x86_64-apple-darwin15/lib \
             $($(PKG)_CONFIGURE_OPTS)
