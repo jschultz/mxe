@@ -15,7 +15,7 @@ $(PKG)_TARGETS  := $(BUILD) $(MXE_TARGETS)
 
 # OSX stuff
 SDK_VERSION       := 10.14
-DEPLOYMENT_TARGET := 10.9
+DEPLOYMENT_TARGET := 10.12
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- https://download.qt.io/official_releases/qt/5.8/ | \
