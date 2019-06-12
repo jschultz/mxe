@@ -520,7 +520,6 @@ CROSS_TARGETS := $(filter-out $(BUILD),$(MXE_TARGETS))
 $(foreach PKG,$(PKGS), \
     $(if $(filter $(PKG),$(filter-out $(autotools_DEPS),$(AUTOTOOLS_PKGS))),\
         $(eval $(PKG)_OO_DEPS += $(BUILD)~autotools)) \
-    $(if $(filter $(PKG),$(CMAKE_PKGS)),$(eval $(PKG)_OO_DEPS += cmake-conf)) \
     $(if $(filter $(PKG),$(MXE_CONF_PKGS)),,$(eval $(PKG)_OO_DEPS += mxe-conf)) \
     $(if $($(PKG)_TARGETS),,$(eval $(PKG)_TARGETS := $(CROSS_TARGETS))) \
     $(foreach TARGET,$(filter $($(PKG)_TARGETS),$(CROSS_TARGETS) $(BUILD)), \
