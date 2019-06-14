@@ -1,0 +1,16 @@
+--- a/mkspecs/macx-clang/qmake.conf	2018-12-03 11:15:26.000000000 +0000
++++ b/mkspecs/macx-clang/qmake.conf	2019-06-14 05:24:16.369595997 +0000
+@@ -24,6 +24,13 @@
+ QMAKE_LIBDIR_X11 = /opt/X11/lib
+ QMAKE_INCDIR_X11 = /opt/X11/include
+ 
++CROSS_COMPILE = x86_64-apple-darwin18-
++QMAKE_MAC_SDK           = macosx
++QMAKE_MAC_SDK_VERSION   = $${sdk_version}
++device.deployment_identifier = macosx
++QMAKE_MACOSX_DEPLOYMENT_TARGET = $${deployment_target}
++QMAKE_XCODE_DEVELOPER_PATH = /Developer
++
+ include(../common/macx.conf)
+ include(../common/gcc-base-mac.conf)
+ include(../common/clang.conf)

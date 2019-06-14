@@ -1,0 +1,73 @@
+--- a/mkspecs/features/mac/default_pre.prf	2018-12-03 11:15:26.000000000 +0000
++++ b/mkspecs/features/mac/default_pre.prf	2019-06-14 09:32:37.274230190 +0000
+@@ -3,7 +3,7 @@
+ 
+ isEmpty(QMAKE_XCODE_DEVELOPER_PATH) {
+     # Get path of Xcode's Developer directory
+-    QMAKE_XCODE_DEVELOPER_PATH = $$system("/usr/bin/xcode-select --print-path 2>/dev/null")
++    QMAKE_XCODE_DEVELOPER_PATH = $$system("xcode-select --print-path 2>/dev/null")
+     isEmpty(QMAKE_XCODE_DEVELOPER_PATH): \
+         error("Xcode path is not set. Please use xcode-select to choose Xcode installation path.")
+ 
+@@ -13,16 +13,16 @@
+ }
+ 
+ isEmpty(QMAKE_XCODEBUILD_PATH): \
+-    QMAKE_XCODEBUILD_PATH = $$system("/usr/bin/xcrun -find xcodebuild 2>/dev/null")
++    QMAKE_XCODEBUILD_PATH = $$system("xcrun -find xcodebuild 2>/dev/null")
+ 
+ !isEmpty(QMAKE_XCODEBUILD_PATH) {
+     # Make sure Xcode is set up properly
+-    !system("/usr/bin/xcrun xcodebuild -license check 2>/dev/null"): \
++    !system("xcrun xcodebuild -license check 2>/dev/null"): \
+         error("Xcode not set up properly. You need to confirm the license agreement by running 'sudo xcrun xcodebuild -license accept'.")
+ 
+     isEmpty(QMAKE_XCODE_VERSION) {
+         # Extract Xcode version using xcodebuild
+-        xcode_version = $$system("/usr/bin/xcrun xcodebuild -version")
++        xcode_version = $$system("xcrun xcodebuild -version")
+         QMAKE_XCODE_VERSION = $$member(xcode_version, 1)
+         isEmpty(QMAKE_XCODE_VERSION): error("Could not resolve Xcode version.")
+         unset(xcode_version)
+--- a/mkspecs/features/mac/sdk.prf	2018-12-03 11:15:26.000000000 +0000
++++ b/mkspecs/features/mac/sdk.prf	2019-06-14 09:34:19.798633113 +0000
+@@ -18,7 +18,7 @@
+         sdk = $$QMAKE_MAC_SDK
+ 
+     isEmpty(QMAKE_MAC_SDK.$${sdk}.$${info}) {
+-        QMAKE_MAC_SDK.$${sdk}.$${info} = $$system("/usr/bin/xcrun --sdk $$sdk $$infoarg 2>/dev/null")
++        QMAKE_MAC_SDK.$${sdk}.$${info} = $$system("/xcrun --sdk $$sdk $$infoarg 2>/dev/null")
+         # --show-sdk-platform-path won't work for Command Line Tools; this is fine
+         # only used by the XCTest backend to testlib
+         isEmpty(QMAKE_MAC_SDK.$${sdk}.$${info}):if(!isEmpty(QMAKE_XCODEBUILD_PATH)|!equals(infoarg, "--show-sdk-platform-path")): \
+@@ -50,7 +50,7 @@
+     value = $$eval($$tool)
+     isEmpty(value): next()
+ 
+-    sysrooted = $$system("/usr/bin/xcrun -sdk $$QMAKE_MAC_SDK -find $$first(value) 2>/dev/null")
++    sysrooted = $$system("/xcrun -sdk $$QMAKE_MAC_SDK -find $$first(value) 2>/dev/null")
+     isEmpty(sysrooted): next()
+ 
+     $$tool = $$sysrooted $$member(value, 1, -1)
+--- a/mkspecs/features/uikit/devices.py	2018-12-03 11:15:26.000000000 +0000
++++ b/mkspecs/features/uikit/devices.py	2019-06-14 09:37:52.310122999 +0000
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!python
+ 
+ #############################################################################
+ ##
+@@ -58,11 +58,11 @@
+ 
+ def simctl_runtimes():
+     return json.loads(subprocess.check_output(
+-        ["/usr/bin/xcrun", "simctl", "list", "runtimes", "--json"]))["runtimes"]
++        ["xcrun", "simctl", "list", "runtimes", "--json"]))["runtimes"]
+ 
+ def simctl_devices():
+     return json.loads(subprocess.check_output(
+-        ["/usr/bin/xcrun", "simctl", "list", "devices", "--json"]))["devices"]
++        ["xcrun", "simctl", "list", "devices", "--json"]))["devices"]
+ 
+ if __name__ == "__main__":
+     parser = argparse.ArgumentParser()

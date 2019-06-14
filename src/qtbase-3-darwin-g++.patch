@@ -1,0 +1,54 @@
+--- a/mkspecs/darwin-g++/qmake.conf	2019-06-09 05:42:39.064589491 +0000
++++ b/mkspecs/darwin-g++/qmake.conf	2019-06-09 05:42:36.012493592 +0000
+@@ -11,9 +11,15 @@
+ 
+ include(../common/unix.conf)
+ 
+-QMAKE_COMPILER          = gcc
++CROSS_COMPILE           = x86_64-apple-darwin18-
++QMAKE_MAC_SDK           = macosx
++QMAKE_MAC_SDK_VERSION   = $${sdk_version}
++device.deployment_identifier = macosx
++QMAKE_MACOSX_DEPLOYMENT_TARGET = $${deployment_target}
+ 
+-QMAKE_CC                = cc
++QMAKE_COMPILER          = $${CROSS_COMPILE}clang
++
++QMAKE_CC                = $${CROSS_COMPILE}clang
+ QMAKE_LEX               = flex
+ QMAKE_LEXFLAGS          =
+ QMAKE_YACC              = yacc
+@@ -34,7 +40,7 @@
+ QMAKE_CFLAGS_PRECOMPILE += -x c-header -c ${QMAKE_PCH_INPUT} -o ${QMAKE_PCH_OUTPUT}
+ QMAKE_CFLAGS_USE_PRECOMPILE += -include ${QMAKE_PCH_OUTPUT_BASE}
+ 
+-QMAKE_CXX               = c++
++QMAKE_CXX               = $${CROSS_COMPILE}clang++
+ QMAKE_CXXFLAGS          = $$QMAKE_CFLAGS
+ QMAKE_CXXFLAGS_DEPS     = $$QMAKE_CFLAGS_DEPS
+ QMAKE_CXXFLAGS_WARN_ON  = $$QMAKE_CFLAGS_WARN_ON
+@@ -54,8 +60,8 @@
+ QMAKE_INCDIR_OPENGL     = /usr/X11R6/include
+ QMAKE_LIBDIR_OPENGL     = /usr/X11R6/lib
+ 
+-QMAKE_LINK              = c++
+-QMAKE_LINK_SHLIB        = c++
++QMAKE_LINK              = $${CROSS_COMPILE}clang++
++QMAKE_LINK_SHLIB        = $${CROSS_COMPILE}clang++
+ QMAKE_LFLAGS            =
+ QMAKE_LFLAGS_RELEASE    =
+ QMAKE_LFLAGS_DEBUG      =
+@@ -76,10 +82,10 @@
+ QMAKE_LIBS_OPENGL       = -lGL
+ QMAKE_LIBS_THREAD       =
+ 
+-QMAKE_AR                = ar cq
++QMAKE_AR                = $${CROSS_COMPILE}ar Scq
+ QMAKE_OBJCOPY           = objcopy
+-QMAKE_NM                = nm -P
+-QMAKE_RANLIB            = ranlib -s
++QMAKE_NM                = $${CROSS_COMPILE}nm -P
++QMAKE_RANLIB            = $${CROSS_COMPILE}ranlib -no_warning_for_no_symbols -s
+ 
+ QMAKE_PCH_OUTPUT_EXT    = .gch
+ 

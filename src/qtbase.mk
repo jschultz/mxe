@@ -37,7 +37,7 @@ define $(PKG)_BUILD
         ./configure \
             -opensource \
             -confirm-license \
-            -xplatform darwin-g++ \
+            -xplatform macx-clang \
             -device-option CROSS_COMPILE=${TARGET}- \
             -device-option PKG_CONFIG='${TARGET}-pkg-config' \
             -pkg-config \
