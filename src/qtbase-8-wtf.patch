@@ -1,0 +1,10 @@
+--- a/mkspecs/features/mac/sdk.prf	2019-06-16 05:03:06.446899446 +0000
++++ b/mkspecs/features/mac/sdk.prf	2019-06-16 05:03:42.291679240 +0000
+@@ -53,6 +53,6 @@
+     sysrooted = $$system("xcrun -sdk $$QMAKE_MAC_SDK -find $$first(value) 2>/dev/null")
+     isEmpty(sysrooted): next()
+ 
+-    $$tool = $$sysrooted $$member(value, 1, -1)
++    $$tool = $$first(value) $$member(value, 1, -1)
+     cache($$tool_variable, set stash, $$tool)
+ }

@@ -1,6 +1,6 @@
---- a/mkspecs/macx-clang/qmake.conf	2018-12-03 11:15:26.000000000 +0000
-+++ b/mkspecs/macx-clang/qmake.conf	2019-06-14 05:24:16.369595997 +0000
-@@ -24,6 +24,13 @@
+--- a/mkspecs/macx-clang/qmake.conf	2019-06-16 06:26:36.877841932 +0000
++++ b/mkspecs/macx-clang/qmake.conf	2019-06-16 06:29:17.267562949 +0000
+@@ -24,9 +24,18 @@
  QMAKE_LIBDIR_X11 = /opt/X11/lib
  QMAKE_INCDIR_X11 = /opt/X11/include
  
@@ -14,3 +14,8 @@
  include(../common/macx.conf)
  include(../common/gcc-base-mac.conf)
  include(../common/clang.conf)
+ include(../common/clang-mac.conf)
+ 
++QMAKE_AR = $${CROSS_COMPILE}ar Scq
++
+ load(qt_config)
