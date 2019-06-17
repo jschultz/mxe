@@ -119,7 +119,7 @@ index 6fdcd562a7..69f00bc71d 100644
          "fontconfig": {
              "label": "Fontconfig",
              "autoDetect": "!config.darwin",
--            "condition": "!config.win32 && features.system-freetype && libs.fontconfig",
+-            "condition": "!config.mxvc && features.system-freetype && libs.fontconfig",
 +            "condition": "features.system-freetype && libs.fontconfig",
              "output": [ "privateFeature", "feature" ]
          },
