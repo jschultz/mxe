@@ -4,8 +4,8 @@ PKG             := qtbase
 $(PKG)_WEBSITE  := https://www.qt.io/
 $(PKG)_DESCR    := Qt
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 5.12.3
-$(PKG)_CHECKSUM := fddfd8852ef7503febeed67b876d1425160869ae2b1ae8e10b3fb0fedc5fe701
+$(PKG)_VERSION  := 5.12.4
+$(PKG)_CHECKSUM := d7e0e8aa542d077a929fb7700411ca9de1f65ae4748d64168d2e7533facd7869
 $(PKG)_SUBDIR   := $(PKG)-everywhere-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-everywhere-src-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://download.qt.io/official_releases/qt/5.12/$($(PKG)_VERSION)/submodules/$($(PKG)_FILE)
@@ -34,6 +34,7 @@ define $(PKG)_BUILD
         PKG_CONFIG="${TARGET}-pkg-config" \
         PKG_CONFIG_SYSROOT_DIR="/" \
         PKG_CONFIG_LIBDIR="$(PREFIX)/$(TARGET)/lib/pkgconfig" \
+        QT_MAC_SDK_NO_VERSION_CHECK=1 \
         ./configure \
             -opensource \
             -confirm-license \

@@ -31,6 +31,7 @@ MXE_TMP := $(PWD)
 
 BUILD_CC   := $(shell (gcc --help >/dev/null 2>&1 && echo gcc) || (clang --help >/dev/null 2>&1 && echo clang))
 BUILD_CXX  := $(shell (g++ --help >/dev/null 2>&1 && echo g++) || (clang++ --help >/dev/null 2>&1 && echo clang++))
+
 DATE       := $(shell gdate --help >/dev/null 2>&1 && echo g)date
 INSTALL    := $(shell ginstall --help >/dev/null 2>&1 && echo g)install
 LIBTOOL    := $(shell glibtool --help >/dev/null 2>&1 && echo g)libtool
@@ -69,7 +70,7 @@ STRIP_LIB       := $(false)
 STRIP_EXE       := $(true)
 
 # disable by setting MXE_USE_CCACHE
-MXE_USE_CCACHE      := mxe
+MXE_USE_CCACHE      :=
 MXE_CCACHE_DIR      := $(PWD)/.ccache
 MXE_CCACHE_BASE_DIR := $(PWD)
 
@@ -103,7 +104,9 @@ MXE_CONFIGURE_OPTS = \
     $(if $(BUILD_STATIC), \
         --enable-static --disable-shared , \
         --disable-static --enable-shared ) \
-    $(MXE_DISABLE_DOC_OPTS)
+    $(MXE_DISABLE_DOC_OPTS) \
+    CC='$(if $(findstring $(TARGET), $(BUILD)),$(BUILD_CC),$(TARGET)-clang)' \
+    CXX='$(if $(findstring $(TARGET), $(BUILD)),$(BUILD_CXX),$(TARGET)-clang++)'
 
 PKG_CONFIGURE_OPTS = \
     $(_$(PKG)_CONFIGURE_OPTS) \

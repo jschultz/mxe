@@ -1,6 +1,6 @@
 --- a/mkspecs/features/toolchain.prf	2018-12-03 11:15:26.000000000 +0000
 +++ b/mkspecs/features/toolchain.prf	2019-06-14 01:50:56.443141559 +0000
-@@ -206,6 +206,7 @@
+@@ -42,6 +42,7 @@
  }
 
  isEmpty($${target_prefix}.COMPILER_MACROS) {

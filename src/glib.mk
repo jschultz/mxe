@@ -101,8 +101,6 @@ define $(PKG)_BUILD
         --with-pcre=system \
         --with-libiconv=gnu \
         --disable-inotify \
-        CC='$(TARGET)-clang' \
-        CXX='$(TARGET)-clang++' \
         PKG_CONFIG='$(PREFIX)/bin/$(TARGET)-pkg-config' \
         CPPFLAGS='-I$(PREFIX)/$(TARGET)/include' \
         LDFLAGS='-L$(PREFIX)/$(TARGET)/lib' \
