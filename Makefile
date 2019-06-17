@@ -19,11 +19,10 @@ DEFAULT_MAX_JOBS   := 6
 PRINTF_COL_1_WIDTH := 13
 SOURCEFORGE_MIRROR := downloads.sourceforge.net
 MXE_MIRROR         := https://mirror.mxe.cc/pkg
-PKG_MIRROR         := https://s3.amazonaws.com/mxe-pkg
+PKG_MIRROR         := https://mxe-pkg.s3.amazonaws.com
 PKG_CDN            := http://d1yihgixbnrglp.cloudfront.net
-GITLAB_BACKUP      := https://gitlab.com/starius/mxe-backup2/raw/master
 # reorder as required, ensuring final one is a http fallback
-MIRROR_SITES       := GITLAB_BACKUP MXE_MIRROR PKG_MIRROR PKG_CDN
+MIRROR_SITES       := MXE_MIRROR PKG_MIRROR PKG_CDN
 
 PWD        := $(shell pwd)
 SHELL      := bash
@@ -68,6 +67,11 @@ PATH       := $(PREFIX)/$(BUILD)/bin:$(PREFIX)/bin:$(shell echo $$PATH | $(SED) 
 STRIP_TOOLCHAIN := $(true)
 STRIP_LIB       := $(false)
 STRIP_EXE       := $(true)
+
+# disable by setting MXE_USE_CCACHE
+MXE_USE_CCACHE      := mxe
+MXE_CCACHE_DIR      := $(PWD)/.ccache
+MXE_CCACHE_BASE_DIR := $(PWD)
 
 # define some whitespace variables
 define newline
@@ -432,7 +436,13 @@ $(PREFIX)/installed/print-git-oneline-$(GIT_HEAD): | $(PREFIX)/installed/.gitkee
 # cross libraries depend on virtual toolchain package, variable used
 # in `cleanup-deps-style` rule below
 CROSS_COMPILER := cc
-MXE_REQS_PKGS   =
+
+# set reqs and bootstrap variables to recursive so pkgs can add themselves
+# CROSS_COMPILER depends (order-only) on MXE_REQS_PKGS
+# all depend (order-only) on BOOTSTRAP_PKGS
+# BOOTSTRAP_PKGS may be prefixed with $(BUILD)~
+MXE_REQS_PKGS  =
+BOOTSTRAP_PKGS =
 
 # warning about switching from `gcc` to `cc`
 $(if $(and $(filter gcc,$(LOCAL_PKG_LIST)$(MAKECMDGOALS)),\
@@ -521,6 +531,8 @@ $(foreach PKG,$(PKGS), \
     $(if $(filter $(PKG),$(filter-out $(autotools_DEPS),$(AUTOTOOLS_PKGS))),\
         $(eval $(PKG)_OO_DEPS += $(BUILD)~autotools)) \
     $(if $(filter $(PKG),$(MXE_CONF_PKGS)),,$(eval $(PKG)_OO_DEPS += mxe-conf)) \
+    $(if $(filter %$(PKG),$(MXE_CONF_PKGS) $(BOOTSTRAP_PKGS)),,$(eval $(PKG)_OO_DEPS += $(BOOTSTRAP_PKGS))) \
+    $(eval $(PKG)_TARGETS := $(sort $($(PKG)_TARGETS))) \
     $(if $($(PKG)_TARGETS),,$(eval $(PKG)_TARGETS := $(CROSS_TARGETS))) \
     $(foreach TARGET,$(filter $($(PKG)_TARGETS),$(CROSS_TARGETS) $(BUILD)), \
         $(eval $(TARGET)~$(PKG)_PKG := $(PKG)) \
@@ -681,7 +693,10 @@ download-$(3)~$(1): download-only-$(1) \
                     $(addprefix download-,$(PKG_ALL_DEPS))
 
 .PHONY: $(1) $(1)~$(3)
-$(1) $(1)~$(3): $(PREFIX)/$(3)/installed/$(1)
+# requested pkgs should not build their native version unless
+# explicitly set in DEPS or they only have a single target
+$(if $(filter-out $(BUILD),$(3))$(call not,$(word 2,$($(1)_TARGETS))),$(1)) \
+    $(1)~$(3): $(PREFIX)/$(3)/installed/$(1)
 $(PREFIX)/$(3)/installed/$(1): $(PKG_MAKEFILES) \
                           $($(PKG)_PATCHES) \
                           $(PKG_TESTFILES) \
@@ -702,7 +717,7 @@ $(PREFIX)/$(3)/installed/$(1): $(PKG_MAKEFILES) \
 	    $(if $(BUILD_DRY_RUN)$(MXE_BUILD_DRY_RUN), \
 	        @$(PRINTF_FMT) '[dry-run]' '$(1)' '$(3)' | $(RTRIM)
 	        @[ -d '$(PREFIX)/$(3)/lib' ] || mkdir -p '$(PREFIX)/$(3)/lib'
-	        @touch '$(PREFIX)/$(3)/lib/$(1).dry-run'
+	        @echo $(1)~$(3) > '$(PREFIX)/$(3)/lib/$(1).dry-run'
 	        @touch '$(PREFIX)/$(3)/installed/$(1)'
 	    $(else),
 	        @$(PRINTF_FMT) '[build]'    '$(1)' '$(3)' | $(RTRIM)
@@ -904,7 +919,7 @@ print-deps-for-build-pkg:
 	        $(if $(or $(value $(call LOOKUP_PKG_RULE,$(PKG),BUILD,$(TARGET))), \
 	                  $(filter $($(PKG)_TYPE),$(BUILD_PKG_TYPES))), \
 	            $(info $(strip for-build-pkg $(TARGET)~$(PKG) \
-	            $(subst $(space),-,$($(PKG)_VERSION)) \
+	            $(subst $(space),-,$($(PKG)_VERSION)-$(OS_SHORT_NAME)) \
 	            $(subst /installed/,~,$(PKG_DEPS) $(PKG_OO_DEPS)))))))
 	            @echo -n
 
@@ -914,6 +929,9 @@ BUILD_PKG_TMP_FILES := *-*.list mxe-*.tar.xz mxe-*.deb* wheezy jessie
 clean:
 	rm -rf $(call TMP_DIR,*) $(PREFIX) \
 	       $(addprefix $(TOP_DIR)/, $(BUILD_PKG_TMP_FILES))
+	@echo
+	@echo 'review ccache size with:'
+	@echo '$(MXE_CCACHE_DIR)/bin/ccache -s'
 
 .PHONY: clean-pkg
 clean-pkg:
