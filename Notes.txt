@@ -1,0 +1,6 @@
+NOTES
+
+changed to qtbase version 5.12.4 - see https://bugreports.qt.io/browse/QTBUG-75848
+
+pixman patch - https://bugs.freedesktop.org/show_bug.cgi?id=104886#c1
+
