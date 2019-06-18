@@ -29,6 +29,16 @@
          QMAKE_XCODE_VERSION = $$member(xcode_version, 1)
          isEmpty(QMAKE_XCODE_VERSION): error("Could not resolve Xcode version.")
          unset(xcode_version)
+--- a/mkspecs/features/mac/sdk.mk	2019-06-13 04:59:14.000000000 +0800
++++ b/mkspecs/features/mac/sdk.mk	2019-06-18 23:50:53.000000000 +0800
+@@ -1,6 +1,6 @@
+
+ ifeq ($(QT_MAC_SDK_NO_VERSION_CHECK),)
+-    CHECK_SDK_COMMAND = /usr/bin/xcrun --sdk $(EXPORT_QMAKE_MAC_SDK) -show-sdk-version 2>&1
++    CHECK_SDK_COMMAND = xcrun --sdk $(EXPORT_QMAKE_MAC_SDK) -show-sdk-version 2>&1
+     CURRENT_MAC_SDK_VERSION := $(shell DEVELOPER_DIR=$(EXPORT_QMAKE_XCODE_DEVELOPER_PATH) $(CHECK_SDK_COMMAND))
+     ifneq ($(CURRENT_MAC_SDK_VERSION),$(EXPORT_QMAKE_MAC_SDK_VERSION))
+         # We don't want to complain about out of date SDK unless the target needs to be remade.
 --- a/mkspecs/features/mac/sdk.prf	2018-12-03 11:15:26.000000000 +0000
 +++ b/mkspecs/features/mac/sdk.prf	2019-06-14 09:34:19.798633113 +0000
 @@ -18,7 +18,7 @@
