@@ -1,0 +1,11 @@
+--- a/include/tds_sysdep_public.h.in	2019-02-04 19:03:19.000000000 +0000
++++ b/include/tds_sysdep_public.h.in	2019-06-18 15:17:19.938175149 +0000
+@@ -25,7 +25,7 @@
+  * MUST not include config.h
+  */
+ 
+-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
++#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || defined(__APPLE__)
+ #  include <stdint.h>
+ #else
+ typedef   signed char      int8_t;	/* 8-bit int */
