@@ -34,7 +34,6 @@ define $(PKG)_BUILD
         PKG_CONFIG="${TARGET}-pkg-config" \
         PKG_CONFIG_SYSROOT_DIR="/" \
         PKG_CONFIG_LIBDIR="$(PREFIX)/$(TARGET)/lib/pkgconfig" \
-        QT_MAC_SDK_NO_VERSION_CHECK=1 \
         ./configure \
             -opensource \
             -confirm-license \
@@ -71,7 +70,6 @@ define $(PKG)_BUILD
             -no-pch \
             -v \
             QMAKE_APPLE_DEVICE_ARCHS="x86_64" \
-            QMAKE_CXXFLAGS+="-D__APPLE_USE_RFC_3542" \
             QMAKE_MOC_OPTIONS+="-DQ_OS_MAC" \
             -sdk macosx \
             QMAKE_MAC_SDK_PATH=$(HOME)/osxcross/target/SDK/MacOSX$(SDK_VERSION).sdk \
@@ -88,8 +86,9 @@ define $(PKG)_BUILD
 
     mkdir            '$(1)/test-qt'
     cd               '$(1)/test-qt' && '$(PREFIX)/$(TARGET)/qt5/bin/qmake' '$(PWD)/src/qt-test.pro'
-    $(MAKE)       -C '$(1)/test-qt' -j '$(JOBS)' $(BUILD_TYPE)
-    $(INSTALL) -m755 '$(1)/test-qt/$(BUILD_TYPE)/test-qt5.exe' '$(PREFIX)/$(TARGET)/bin/'
+    QT_MAC_SDK_NO_VERSION_CHECK=1 \
+        $(MAKE)       -C '$(1)/test-qt' -j '$(JOBS)'
+#    $(INSTALL) -m755 '$(1)/test-qt/$(BUILD_TYPE)/test-qt5.exe' '$(PREFIX)/$(TARGET)/bin/'
 
     # build test the manual way
     mkdir '$(1)/test-$(PKG)-pkgconfig'
@@ -99,7 +98,7 @@ define $(PKG)_BUILD
         -I'$(1)/test-$(PKG)-pkgconfig' \
         '$(TOP_DIR)/src/qt-test.hpp'
     '$(PREFIX)/$(TARGET)/qt5/bin/rcc' -name qt-test -o '$(1)/test-$(PKG)-pkgconfig/qrc_qt-test.cpp' '$(TOP_DIR)/src/qt-test.qrc'
-    '$(TARGET)-g++' \
+    '$(TARGET)-clang++' \
         -W -Wall -std=c++0x -pedantic \
         '$(TOP_DIR)/src/qt-test.cpp' \
         '$(1)/test-$(PKG)-pkgconfig/moc_qt-test.cpp' \
