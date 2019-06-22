@@ -71,7 +71,6 @@ define $(PKG)_BUILD
             -no-pch \
             -v \
             QMAKE_APPLE_DEVICE_ARCHS="x86_64" \
-            QMAKE_CXXFLAGS+="-D__APPLE_USE_RFC_3542" \
             QMAKE_MOC_OPTIONS+="-DQ_OS_MAC" \
             -sdk macosx \
             QMAKE_MAC_SDK_PATH=$(HOME)/osxcross/target/SDK/MacOSX$(SDK_VERSION).sdk \
