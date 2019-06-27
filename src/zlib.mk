@@ -20,11 +20,20 @@ define $(PKG)_UPDATE
     head -1
 endef
 
-define $(PKG)_BUILD
+define $(PKG)_BUILD_NATIVE
     cd '$(1)' && CHOST='$(TARGET)' ./configure \
         --prefix='$(PREFIX)/$(TARGET)' \
         --static
-    $(MAKE) -C '$(1)' -j '$(JOBS)' install
+    $(MAKE) -C '$(1)' -j '$(JOBS)' install \
+	CC='$(TARGET)-gcc'
+endef
+
+define $(PKG)_BUILD_CROSS
+    cd '$(1)' && CHOST='$(TARGET)' ./configure \
+        --prefix='$(PREFIX)/$(TARGET)' \
+        --static
+    $(MAKE) -C '$(1)' -j '$(JOBS)' install \
+	CC='$(TARGET)-gcc'
 endef
 
 define $(PKG)_BUILD_SHARED

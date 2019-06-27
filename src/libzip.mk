@@ -20,7 +20,7 @@ define $(PKG)_BUILD
     $(INSTALL) -m644 '$(BUILD_DIR)/zipconf.h' '$(PREFIX)/$(TARGET)/include'
     $(INSTALL) -m644 '$(BUILD_DIR)/libzip.pc' '$(PREFIX)/$(TARGET)/lib/pkgconfig'
 
-    '$(TARGET)-gcc' \
+    '$(TARGET)-clang' \
         -W -Wall -Werror -ansi -pedantic \
         '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libzip.exe' \
         `'$(TARGET)-pkg-config' libzip --cflags --libs`

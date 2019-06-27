@@ -19,15 +19,15 @@ define $(PKG)_BUILD
     ) > '$(PREFIX)/$(TARGET)/lib/pkgconfig/pthreads.pc'
 
     # test pkg-config and libgomp
-    '$(TARGET)-gcc' \
+    '$(TARGET)-clang' \
         -W -Wall -Werror -ansi -pedantic \
         '$(TOP_DIR)/src/$(PKG)-test.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
         `'$(TARGET)-pkg-config' --libs pthreads`
 
-    '$(TARGET)-gcc' \
-        -W -Wall -Werror -ansi -pedantic \
-        '$(TOP_DIR)/src/$(PKG)-libgomp-test.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)-libgomp.exe' \
-        -fopenmp
+#     '$(TARGET)-clang' \
+#         -W -Wall -Werror -ansi -pedantic \
+#         '$(TOP_DIR)/src/$(PKG)-libgomp-test.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)-libgomp.exe' \
+#         -fopenmp
 
     # test cmake
     mkdir '$(1).test-cmake'

@@ -34,6 +34,7 @@ define $(PKG)_BUILD
         PKG_CONFIG="${TARGET}-pkg-config" \
         PKG_CONFIG_SYSROOT_DIR="/" \
         PKG_CONFIG_LIBDIR="$(PREFIX)/$(TARGET)/lib/pkgconfig" \
+        OSXCROSS_XCRUN_NO_ENV_WARNING=1 \
         ./configure \
             -opensource \
             -confirm-license \
@@ -84,38 +85,38 @@ define $(PKG)_BUILD
     $(MAKE) -C '$(1)' -j 1 install
     ln -sf '$(PREFIX)/$(TARGET)/qt5/bin/qmake' '$(PREFIX)/bin/$(TARGET)'-qmake-qt5
 
-    mkdir            '$(1)/test-qt'
-    cd               '$(1)/test-qt' && '$(PREFIX)/$(TARGET)/qt5/bin/qmake' '$(PWD)/src/qt-test.pro'
-    QT_MAC_SDK_NO_VERSION_CHECK=1 \
-        $(MAKE)       -C '$(1)/test-qt' -j '$(JOBS)'
-#    $(INSTALL) -m755 '$(1)/test-qt/$(BUILD_TYPE)/test-qt5.exe' '$(PREFIX)/$(TARGET)/bin/'
-
-    # build test the manual way
-    mkdir '$(1)/test-$(PKG)-pkgconfig'
-    '$(PREFIX)/$(TARGET)/qt5/bin/uic' -o '$(1)/test-$(PKG)-pkgconfig/ui_qt-test.h' '$(TOP_DIR)/src/qt-test.ui'
-    '$(PREFIX)/$(TARGET)/qt5/bin/moc' \
-        -o '$(1)/test-$(PKG)-pkgconfig/moc_qt-test.cpp' \
-        -I'$(1)/test-$(PKG)-pkgconfig' \
-        '$(TOP_DIR)/src/qt-test.hpp'
-    '$(PREFIX)/$(TARGET)/qt5/bin/rcc' -name qt-test -o '$(1)/test-$(PKG)-pkgconfig/qrc_qt-test.cpp' '$(TOP_DIR)/src/qt-test.qrc'
-    '$(TARGET)-clang++' \
-        -W -Wall -std=c++0x -pedantic \
-        '$(TOP_DIR)/src/qt-test.cpp' \
-        '$(1)/test-$(PKG)-pkgconfig/moc_qt-test.cpp' \
-        '$(1)/test-$(PKG)-pkgconfig/qrc_qt-test.cpp' \
-        -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)-pkgconfig.exe' \
-        -I'$(1)/test-$(PKG)-pkgconfig' \
-        `'$(TARGET)-pkg-config' Qt5Widgets$(BUILD_TYPE_SUFFIX) --cflags --libs`
+#     mkdir            '$(1)/test-qt'
+#     cd               '$(1)/test-qt' && '$(PREFIX)/$(TARGET)/qt5/bin/qmake' '$(PWD)/src/qt-test.pro'
+#     QT_MAC_SDK_NO_VERSION_CHECK=1 \
+#         $(MAKE)       -C '$(1)/test-qt' -j '$(JOBS)'
+#     $(INSTALL) -m755 '$(1)/test-qt/$(BUILD_TYPE)/test-qt5.exe' '$(PREFIX)/$(TARGET)/bin/'
+#
+#     # build test the manual way
+#     mkdir '$(1)/test-$(PKG)-pkgconfig'
+#     '$(PREFIX)/$(TARGET)/qt5/bin/uic' -o '$(1)/test-$(PKG)-pkgconfig/ui_qt-test.h' '$(TOP_DIR)/src/qt-test.ui'
+#     '$(PREFIX)/$(TARGET)/qt5/bin/moc' \
+#         -o '$(1)/test-$(PKG)-pkgconfig/moc_qt-test.cpp' \
+#         -I'$(1)/test-$(PKG)-pkgconfig' \
+#         '$(TOP_DIR)/src/qt-test.hpp'
+#     '$(PREFIX)/$(TARGET)/qt5/bin/rcc' -name qt-test -o '$(1)/test-$(PKG)-pkgconfig/qrc_qt-test.cpp' '$(TOP_DIR)/src/qt-test.qrc'
+#     '$(TARGET)-clang++' \
+#         -W -Wall -std=c++0x -pedantic \
+#         '$(TOP_DIR)/src/qt-test.cpp' \
+#         '$(1)/test-$(PKG)-pkgconfig/moc_qt-test.cpp' \
+#         '$(1)/test-$(PKG)-pkgconfig/qrc_qt-test.cpp' \
+#         -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)-pkgconfig.exe' \
+#         -I'$(1)/test-$(PKG)-pkgconfig' \
+#         `'$(TARGET)-pkg-config' Qt5Widgets$(BUILD_TYPE_SUFFIX) --cflags --libs`
 
     # setup cmake toolchain
     echo 'set(CMAKE_SYSTEM_PREFIX_PATH "$(PREFIX)/$(TARGET)/qt5" ${CMAKE_SYSTEM_PREFIX_PATH})' > '$(CMAKE_TOOLCHAIN_DIR)/$(PKG).cmake'
 
-    # batch file to run test programs
-    (printf 'set PATH=..\\lib;..\\qt5\\bin;..\\qt5\\lib;%%PATH%%\r\n'; \
-     printf 'set QT_QPA_PLATFORM_PLUGIN_PATH=..\\qt5\\plugins\r\n'; \
-     printf 'test-qt5.exe\r\n'; \
-     printf 'test-qtbase-pkgconfig.exe\r\n';) \
-     > '$(PREFIX)/$(TARGET)/bin/test-qt5.bat'
+#     # batch file to run test programs
+#     (printf 'set PATH=..\\lib;..\\qt5\\bin;..\\qt5\\lib;%%PATH%%\r\n'; \
+#      printf 'set QT_QPA_PLATFORM_PLUGIN_PATH=..\\qt5\\plugins\r\n'; \
+#      printf 'test-qt5.exe\r\n'; \
+#      printf 'test-qtbase-pkgconfig.exe\r\n';) \
+#      > '$(PREFIX)/$(TARGET)/bin/test-qt5.bat'
 
     # add libs to CMake config of Qt5Core to fix static linking
     $(SED) -i 's,set(_Qt5Core_LIB_DEPENDENCIES \"\"),set(_Qt5Core_LIB_DEPENDENCIES \"ole32;uuid;advapi32;shell32;user32;kernel32;mpr;version;winmm;z;pcre2-16;netapi32;userenv\"),g' '$(PREFIX)/$(TARGET)/qt5/lib/cmake/Qt5Core/Qt5CoreConfig.cmake'

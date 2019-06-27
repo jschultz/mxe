@@ -21,7 +21,7 @@ define $(PKG)_BUILD
         $(MXE_CONFIGURE_OPTS)
     $(MAKE) -C '$(1)' -j '$(JOBS)' install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS= man_MANS=
 
-    '$(TARGET)-gcc' \
+    '$(TARGET)-clang' \
         -W -Wall -Werror -ansi -pedantic \
 	-I$(PREFIX)/$(TARGET)/include \
 	-L$(PREFIX)/$(TARGET)/lib \

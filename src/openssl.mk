@@ -25,14 +25,14 @@ define $(PKG)_BUILD
     rm -fv '$(PREFIX)/$(TARGET)/'*/{libcrypto*,libssl*}
     rm -fv '$(PREFIX)/$(TARGET)/lib/pkgconfig/'{libcrypto*,libssl*,openssl*}
 
-    cd '$(1)' && CC='$(TARGET)-gcc' ./Configure \
+    cd '$(1)' && CC='$(TARGET)-clang' ./Configure \
 	darwin64-x86_64-cc \
         zlib \
         $(if $(BUILD_STATIC),no-,)shared \
         no-capieng \
         --prefix='$(PREFIX)/$(TARGET)'
     $(MAKE) -C '$(1)' all install_sw -j 1 \
-        CC='$(TARGET)-gcc' \
+        CC='$(TARGET)-clang' \
         RANLIB='$(TARGET)-ranlib' \
         AR='$(TARGET)-ar' \
         CROSS_COMPILE='$(TARGET)-' \

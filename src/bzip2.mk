@@ -21,7 +21,7 @@ endef
 define $(PKG)_BUILD_COMMON
     $(MAKE) -C '$(1)' -j '$(JOBS)' libbz2.a \
         PREFIX='$(PREFIX)/$(TARGET)' \
-        CC='$(TARGET)-gcc' \
+        CC='$(TARGET)-clang' \
         AR='$(TARGET)-ar' \
         RANLIB='$(TARGET)-ranlib'
     $(INSTALL) -d '$(PREFIX)/$(TARGET)/lib'
@@ -36,7 +36,7 @@ endef
 
 define $(PKG)_BUILD_SHARED
     $($(PKG)_BUILD_COMMON)
-    '$(TARGET)-gcc' '$(1)'/*.o -shared \
+    '$(TARGET)-clang' '$(1)'/*.o -shared \
         -o '$(PREFIX)/$(TARGET)/bin/libbz2.dll' -Xlinker \
         --out-implib -Xlinker '$(PREFIX)/$(TARGET)/lib/libbz2.dll.a'
 endef
