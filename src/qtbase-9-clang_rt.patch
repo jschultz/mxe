@@ -1,0 +1,10 @@
+--- a/src/corelib/corelib.pro	2019-06-13 04:59:14.000000000 +0800
++++ b/src/corelib/corelib.pro	2019-08-09 12:27:18.000000000 +0800
+@@ -59,6 +59,7 @@
+     }
+     LIBS_PRIVATE += -framework CoreFoundation
+     LIBS_PRIVATE += -framework Foundation
++    LIBS_PRIVATE += -lclang_rt.osx
+ }
+ 
+ integrity {

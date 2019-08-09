@@ -42,6 +42,7 @@ define $(PKG)_BUILD
         --enable-svg \
         --enable-pthread \
         CFLAGS="$(CFLAGS) -I$(PREFIX)/$(TARGET)/include $(if $(BUILD_STATIC),-DCAIRO_WIN32_STATIC_BUILD)" \
-        LIBS=""
+        LIBS="" \
+        PKG_CONFIG='$(TARGET)-pkg-config'
     $(MAKE) -C '$(1)' -j '$(JOBS)' install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
 endef

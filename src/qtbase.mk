@@ -30,8 +30,7 @@ define $(PKG)_BUILD
     cd '$(1)' && \
         OPENSSL_LIBS="`'$(TARGET)-pkg-config' --libs-only-l openssl`" \
         PSQL_LIBS="-lpq `'$(TARGET)-pkg-config' --libs-only-l openssl pthreads`" \
-        SYBASE_LIBS="`'$(TARGET)-pkg-config' --libs-only-l openssl` -liconv" \
-        PKG_CONFIG="${TARGET}-pkg-config" \
+        SYBASE_LIBS="-lsybdb `'$(TARGET)-pkg-config' --libs-only-l openssl` -liconv" \
         PKG_CONFIG_SYSROOT_DIR="/" \
         PKG_CONFIG_LIBDIR="$(PREFIX)/$(TARGET)/lib/pkgconfig" \
         OSXCROSS_XCRUN_NO_ENV_WARNING=1 \
@@ -78,6 +77,7 @@ define $(PKG)_BUILD
             QMAKE_MACOSX_DEPLOYMENT_TARGET=$(DEPLOYMENT_TARGET) \
             -I /home/kdedev/mxe/usr/x86_64-apple-darwin18/include \
             -L /home/kdedev/mxe/usr/x86_64-apple-darwin18/lib \
+            -L /home/kdedev/osxcross/build/compiler-rt/build/lib/darwin \
             $($(PKG)_CONFIGURE_OPTS)
 
     $(MAKE) -C '$(1)' -j '$(JOBS)'
@@ -85,11 +85,12 @@ define $(PKG)_BUILD
     $(MAKE) -C '$(1)' -j 1 install
     ln -sf '$(PREFIX)/$(TARGET)/qt5/bin/qmake' '$(PREFIX)/bin/$(TARGET)'-qmake-qt5
 
-#     mkdir            '$(1)/test-qt'
-#     cd               '$(1)/test-qt' && '$(PREFIX)/$(TARGET)/qt5/bin/qmake' '$(PWD)/src/qt-test.pro'
-#     QT_MAC_SDK_NO_VERSION_CHECK=1 \
-#         $(MAKE)       -C '$(1)/test-qt' -j '$(JOBS)'
-#     $(INSTALL) -m755 '$(1)/test-qt/$(BUILD_TYPE)/test-qt5.exe' '$(PREFIX)/$(TARGET)/bin/'
+     mkdir            '$(1)/test-qt'
+     cd               '$(1)/test-qt' && '$(PREFIX)/$(TARGET)/qt5/bin/qmake' '$(PWD)/src/qt-test.pro'
+     QT_MAC_SDK_NO_VERSION_CHECK=1 \
+     PKG_CONFIG="${TARGET}-pkg-config" \
+         $(MAKE)       -C '$(1)/test-qt' -j '$(JOBS)'
+     cd $(1)/test-qt; find test-qt5.app -type f -exec $(INSTALL) -Dm 755 "{}" "$(PREFIX)/$(TARGET)/bin/{}" \;
 #
 #     # build test the manual way
 #     mkdir '$(1)/test-$(PKG)-pkgconfig'

@@ -1,6 +1,6 @@
 --- a/mkspecs/macx-clang/qmake.conf	2019-06-16 06:26:36.877841932 +0000
 +++ b/mkspecs/macx-clang/qmake.conf	2019-06-16 06:29:17.267562949 +0000
-@@ -24,9 +24,18 @@
+@@ -24,9 +24,19 @@
  QMAKE_LIBDIR_X11 = /opt/X11/lib
  QMAKE_INCDIR_X11 = /opt/X11/include
  
@@ -10,12 +10,13 @@
 +device.deployment_identifier = macosx
 +QMAKE_MACOSX_DEPLOYMENT_TARGET = $${deployment_target}
 +QMAKE_XCODE_DEVELOPER_PATH = /Developer
++QMAKE_EXPORT_LIBS_FREETYPE = -lfreetype -lbz2
 +
  include(../common/macx.conf)
  include(../common/gcc-base-mac.conf)
  include(../common/clang.conf)
  include(../common/clang-mac.conf)
- 
+
 +QMAKE_AR = $${CROSS_COMPILE}ar Scq
 +
  load(qt_config)
