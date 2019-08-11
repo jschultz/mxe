@@ -1,0 +1,99 @@
+From 0fc7e18bf7a24c9408602242d51a852905dfd0da Mon Sep 17 00:00:00 2001
+From: Timur Pocheptsov <timur.pocheptsov@qt.io>
+Date: Wed, 3 Jul 2019 15:26:31 +0200
+Subject: [PATCH] Core/IO/Bluetooth - fix ambiguous conversions
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+... somewhat prospective fix (I do not have the new iOS yet), so far build
+never failed with my current SDK.
+
+Fixes: QTBUG-76847
+Change-Id: Iab75c3cd47144cd83b679b1dbf82339e29c07bd1
+Reviewed-by: André Klitzing <aklitzing@gmail.com>
+Reviewed-by: Timur Pocheptsov <timur.pocheptsov@qt.io>
+---
+ src/bluetooth/osx/osxbtperipheralmanager.mm         | 4 ++--
+ src/bluetooth/qbluetoothdevicediscoveryagent_ios.mm | 6 +++---
+ src/bluetooth/qlowenergycontroller_osx.mm           | 6 +++---
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/src/bluetooth/osx/osxbtperipheralmanager.mm b/src/bluetooth/osx/osxbtperipheralmanager.mm
+index 1998340a..39f9808c 100644
+--- a/src/bluetooth/osx/osxbtperipheralmanager.mm
++++ b/src/bluetooth/osx/osxbtperipheralmanager.mm
+@@ -340,7 +340,7 @@ - (void)startAdvertising:(NSDictionary *)advertisementData
+ - (void)startAdvertising
+ {
+     state = PeripheralState::waitingForPowerOn;
+-    if (manager)
++    if (manager.data())
+         [manager setDelegate:nil];
+     manager.reset([[CBPeripheralManager alloc] initWithDelegate:self
+                    queue:OSXBluetooth::qt_LE_queue()]);
+@@ -405,7 +405,7 @@ - (void)write:(const QByteArray &)value
+ 
+ - (void) addServicesToPeripheral
+ {
+-    Q_ASSERT(manager);
++    Q_ASSERT(manager.data());
+ 
+     if (nextServiceToAdd < services.size())
+         [manager addService:services[nextServiceToAdd++]];
+diff --git a/src/bluetooth/qbluetoothdevicediscoveryagent_ios.mm b/src/bluetooth/qbluetoothdevicediscoveryagent_ios.mm
+index c50d546d..557785b4 100644
+--- a/src/bluetooth/qbluetoothdevicediscoveryagent_ios.mm
++++ b/src/bluetooth/qbluetoothdevicediscoveryagent_ios.mm
+@@ -132,7 +132,7 @@ void registerQDeviceDiscoveryMetaType()
+ 
+ QBluetoothDeviceDiscoveryAgentPrivate::~QBluetoothDeviceDiscoveryAgentPrivate()
+ {
+-    if (inquiryLE) {
++    if (inquiryLE.data()) {
+         // We want the LE scan to stop as soon as possible.
+         if (dispatch_queue_t leQueue = OSXBluetooth::qt_LE_queue()) {
+             // Local variable to be retained ...
+@@ -151,7 +151,7 @@ void registerQDeviceDiscoveryMetaType()
+     if (stopPending)
+         return false;
+ 
+-    return inquiryLE;
++    return !!inquiryLE.data();
+ }
+ 
+ void QBluetoothDeviceDiscoveryAgentPrivate::start(QBluetoothDeviceDiscoveryAgent::DiscoveryMethods /*methods*/)
+@@ -178,7 +178,7 @@ void registerQDeviceDiscoveryMetaType()
+                       this, &QBluetoothDeviceDiscoveryAgentPrivate::LEdeviceFound);
+ 
+     inquiryLE.reset([[LEDeviceInquiryObjC alloc] initWithNotifier:notifier.data()]);
+-    if (inquiryLE)
++    if (inquiryLE.data())
+         notifier.take(); // Whatever happens next, inquiryLE is already the owner ...
+ 
+     dispatch_queue_t leQueue(qt_LE_queue());
+diff --git a/src/bluetooth/qlowenergycontroller_osx.mm b/src/bluetooth/qlowenergycontroller_osx.mm
+index 8bcdc22e..9aaee855 100644
+--- a/src/bluetooth/qlowenergycontroller_osx.mm
++++ b/src/bluetooth/qlowenergycontroller_osx.mm
+@@ -165,7 +165,7 @@ UUIDList qt_servicesUuids(NSArray *services)
+ #endif
+     } else {
+         centralManager.reset([[ObjCCentralManager alloc] initWith:notifier.data()]);
+-        if (!centralManager) {
++        if (!centralManager.data()) {
+             qCWarning(QT_BT_OSX) << "failed to initialize central manager";
+             return;
+         }
+@@ -200,9 +200,9 @@ UUIDList qt_servicesUuids(NSArray *services)
+ bool QLowEnergyControllerPrivateOSX::isValid() const
+ {
+ #ifdef Q_OS_TVOS
+-    return centralManager;
++    return centralManager.data();
+ #else
+-    return centralManager || peripheralManager;
++    return centralManager.data() || peripheralManager.data();
+ #endif
+ }
+ 

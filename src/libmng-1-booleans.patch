@@ -1,0 +1,79 @@
+--- a/libmng_jpeg.c.bak	2012-07-30 03:26:34.000000000 +0800
++++ b/libmng_jpeg.c	2019-08-11 09:36:07.000000000 +0800
+@@ -105,7 +105,7 @@
+ boolean mng_fill_input_buffer (j_decompress_ptr cinfo)
+ #endif
+ {
+-  return FALSE;                        /* force IJG routine to return to caller */
++  return MNG_FALSE;                        /* force IJG routine to return to caller */
+ }
+ #endif /* MNG_INCLUDE_JNG_READ */
+ 
+@@ -533,7 +533,7 @@
+ #ifdef MNG_SUPPORT_TRACE
+       MNG_TRACE (pData, MNG_FN_JPEG_DECOMPRESSDATA, MNG_LC_JPEG_READ_HEADER)
+ #endif
+-      if (jpeg_read_header (pData->pJPEGdinfo, TRUE) != JPEG_SUSPENDED)
++      if (jpeg_read_header (pData->pJPEGdinfo, MNG_TRUE) != JPEG_SUSPENDED)
+       {                                /* indicate the header's oke */
+         pData->bJPEGhasheader = MNG_TRUE;
+                                        /* let's do some sanity checks ! */
+@@ -577,13 +577,13 @@
+       /* set parameters for decompression */
+ 
+       if (pData->bJPEGprogressive)     /* progressive display ? */
+-        pData->pJPEGdinfo->buffered_image = TRUE;
++        pData->pJPEGdinfo->buffered_image = MNG_TRUE;
+ 
+       /* jpeg_start_decompress(...); */
+ #ifdef MNG_SUPPORT_TRACE
+       MNG_TRACE (pData, MNG_FN_JPEG_DECOMPRESSDATA, MNG_LC_JPEG_START_DECOMPRESS)
+ #endif
+-      if (jpeg_start_decompress (pData->pJPEGdinfo) == TRUE)
++      if (jpeg_start_decompress (pData->pJPEGdinfo) == MNG_TRUE)
+                                        /* indicate it started */
+         pData->bJPEGdecostarted = MNG_TRUE;
+ 
+@@ -680,7 +680,7 @@
+ #ifdef MNG_SUPPORT_TRACE
+       MNG_TRACE (pData, MNG_FN_JPEG_DECOMPRESSDATA, MNG_LC_JPEG_FINISH_DECOMPRESS)
+ #endif
+-      if (jpeg_finish_decompress (pData->pJPEGdinfo) == TRUE)
++      if (jpeg_finish_decompress (pData->pJPEGdinfo) == MNG_TRUE)
+       {                                /* indicate it's done */
+         pData->bJPEGhasheader   = MNG_FALSE;
+         pData->bJPEGdecostarted = MNG_FALSE;
+@@ -887,7 +887,7 @@
+ #ifdef MNG_SUPPORT_TRACE
+       MNG_TRACE (pData, MNG_FN_JPEG_DECOMPRESSDATA, MNG_LC_JPEG_READ_HEADER)
+ #endif
+-      if (jpeg_read_header (pData->pJPEGdinfo2, TRUE) != JPEG_SUSPENDED)
++      if (jpeg_read_header (pData->pJPEGdinfo2, MNG_TRUE) != JPEG_SUSPENDED)
+       {                                /* indicate the header's oke */
+         pData->bJPEGhasheader2 = MNG_TRUE;
+                                        /* let's do some sanity checks ! */
+@@ -922,13 +922,13 @@
+       /* set parameters for decompression */
+ 
+       if (pData->bJPEGprogressive2)    /* progressive display ? */
+-        pData->pJPEGdinfo2->buffered_image = TRUE;
++        pData->pJPEGdinfo2->buffered_image = MNG_TRUE;
+ 
+       /* jpeg_start_decompress(...); */
+ #ifdef MNG_SUPPORT_TRACE
+       MNG_TRACE (pData, MNG_FN_JPEG_DECOMPRESSDATA, MNG_LC_JPEG_START_DECOMPRESS)
+ #endif
+-      if (jpeg_start_decompress (pData->pJPEGdinfo2) == TRUE)
++      if (jpeg_start_decompress (pData->pJPEGdinfo2) == MNG_TRUE)
+                                        /* indicate it started */
+         pData->bJPEGdecostarted2 = MNG_TRUE;
+ 
+@@ -1017,7 +1017,7 @@
+ #ifdef MNG_SUPPORT_TRACE
+       MNG_TRACE (pData, MNG_FN_JPEG_DECOMPRESSDATA, MNG_LC_JPEG_FINISH_DECOMPRESS)
+ #endif
+-      if (jpeg_finish_decompress (pData->pJPEGdinfo2) == TRUE)
++      if (jpeg_finish_decompress (pData->pJPEGdinfo2) == MNG_TRUE)
+       {                                /* indicate it's done */
+         pData->bJPEGhasheader2   = MNG_FALSE;
+         pData->bJPEGdecostarted2 = MNG_FALSE;

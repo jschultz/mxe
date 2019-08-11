@@ -5,7 +5,7 @@ $(PKG)_WEBSITE  := https://www.qt.io/
 $(PKG)_DESCR    := Qt
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION   = $(qtbase_VERSION)
-$(PKG)_CHECKSUM := c9e92d2f0d369e44bb1a60e9fa6d970f8d9893d653212305e04be5e6daec2cd8
+$(PKG)_CHECKSUM := 3b0e353860a9c0cd4db9eeae5f94fef8811ed7d107e3e5e97e4a557f61bd6eb6
 $(PKG)_SUBDIR    = $(subst qtbase,qttools,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qttools,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qttools,$(qtbase_URL))
@@ -20,15 +20,15 @@ endef
 
 define $(PKG)_BUILD
     cd '$(1)' && '$(PREFIX)/$(TARGET)/qt5/bin/qmake'
-    $(MAKE) -C '$(1)' -j '$(JOBS)'
-    $(MAKE) -C '$(1)' -j 1 install
+    OSXCROSS_XCRUN_NO_ENV_WARNING=1 $(MAKE) -C '$(1)' -j '$(JOBS)'
+    OSXCROSS_XCRUN_NO_ENV_WARNING=1 $(MAKE) -C '$(1)' -j 1 install
 
     # test QUiLoader
     mkdir '$(1)'.test
-    cd '$(1)'.test && '$(TARGET)-cmake' '$($(PKG)_TEST_DIR)'
+    cd '$(1)'.test && '$(TARGET)-cmake' '-DCMAKE_TOOLCHAIN_FILE=$(PREFIX)/../toolchain.cmake' -DMXE_PREFIX=$(PREFIX) -DMXE_TARGET=$(TARGET) '$($(PKG)_TEST_DIR)'
     $(MAKE) -C '$(1)'.test
-    cp '$(1)'.test/mxe-cmake-qtuitools.exe \
-        '$(PREFIX)/$(TARGET)/bin/test-qttools.exe'
+    cp '$(1)'.test/mxe-cmake-qtuitools \
+        '$(PREFIX)/$(TARGET)/bin/test-qttools'
 endef
 
 define $(PKG)_BUILD_$(BUILD)

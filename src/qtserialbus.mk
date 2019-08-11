@@ -5,7 +5,7 @@ $(PKG)_WEBSITE  := https://www.qt.io/
 $(PKG)_DESCR    := Qt
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION   = $(qtbase_VERSION)
-$(PKG)_CHECKSUM := 792cd2d411d2ebd737f5d09580f8db479cd35f2f7e7cedb4412075ef20fcfe4d
+$(PKG)_CHECKSUM := 69d56905f43ee13e670750e8f46d373835fae81d6343baa7c4004d2a2c6311fc
 $(PKG)_SUBDIR    = $(subst qtbase,qtserialbus,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtserialbus,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtserialbus,$(qtbase_URL))
@@ -17,6 +17,6 @@ endef
 
 define $(PKG)_BUILD
     cd '$(1)' && '$(PREFIX)/$(TARGET)/qt5/bin/qmake'
-    $(MAKE) -C '$(1)' -j '$(JOBS)'
-    $(MAKE) -C '$(1)' -j 1 install
+    OSXCROSS_XCRUN_NO_ENV_WARNING=1 $(MAKE) -C '$(1)' -j '$(JOBS)'
+    OSXCROSS_XCRUN_NO_ENV_WARNING=1 $(MAKE) -C '$(1)' -j 1 install
 endef

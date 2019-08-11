@@ -11,6 +11,9 @@ $(PKG)_DEPS     := cc jpeg
 
 define $(PKG)_BUILD
     cd '$(BUILD_DIR)' && $(TARGET)-cmake '$(SOURCE_DIR)' \
+        -DCMAKE_INSTALL_LIBDIR='$(PREFIX)/$(TARGET)/lib/$(PKG)' \
+        -DCMAKE_INSTALL_DOCDIR='$(PREFIX)/doc/JasPer' \
+        -DCMAKE_INSTALL_INCLUDEDIR='$(PREFIX)/include' \
         -DJAS_ENABLE_SHARED=$(CMAKE_SHARED_BOOL) \
         -DJAS_ENABLE_LIBJPEG=ON \
         -DJAS_ENABLE_OPENGL=OFF \
