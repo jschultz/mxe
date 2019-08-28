@@ -28,8 +28,11 @@ define $(PKG)_BUILD
         PKG_CONFIG='$(TARGET)-pkg-config'
     $(MAKE) -C '$(1)' -j '$(JOBS)' install $(MXE_DISABLE_CRUFT)
 
-    '$(TARGET)-gcc' \
+    '$(TARGET)-clang' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libssh2.exe' \
+        -std=c99 \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libssh2' \
+        '-I$(PREFIX)/$(TARGET)/include' \
+	'-L$(PREFIX)/$(TARGET)/lib' \
         `'$(TARGET)-pkg-config' --cflags --libs libssh2`
 endef

@@ -1,0 +1,11 @@
+--- a/lib/idn2.h.in	2019-05-23 18:41:12.000000000 +0800
++++ b/lib/idn2.h.in	2019-08-13 10:04:23.000000000 +0800
+@@ -292,7 +292,7 @@
+     IDN2_DOT_IN_LABEL = -311,
+     IDN2_INVALID_TRANSITIONAL = -312,
+     IDN2_INVALID_NONTRANSITIONAL = -313,
+-    IDN2_ALABEL_ROUNDTRIP_FAILED = -314,
++    IDN2_ALABEL_ROUNDTRIP_FAILED = -314
+   } idn2_rc;
+ 
+ /* Auxiliary functions. */

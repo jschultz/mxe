@@ -24,7 +24,7 @@ define $(PKG)_BUILD
 
     '$(TARGET)-clang' \
         -W -Wall -Werror -std=c99 -pedantic \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libffi.exe' \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libffi' \
         `'$(TARGET)-pkg-config' libffi --cflags --libs`
 endef
 

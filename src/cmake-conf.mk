@@ -3,7 +3,7 @@
 PKG            := cmake-conf
 $(PKG)_VERSION := 1
 $(PKG)_UPDATE  := echo 1
-$(PKG)_TARGETS := $(BUILD)
+$(PKG)_TARGETS := $(BUILD) $(MXE_TARGETS)
 $(PKG)_DEPS    := $(BUILD)~$(PKG)
 $(PKG)_FILE_DEPS := $(wildcard $(PWD)/src/cmake/conf/*)
 $(PKG)_DEPS_$(BUILD) := cmake

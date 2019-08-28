@@ -25,7 +25,7 @@ define $(PKG)_BUILD
 
     # test QUiLoader
     mkdir '$(1)'.test
-    cd '$(1)'.test && '$(TARGET)-cmake' '-DCMAKE_TOOLCHAIN_FILE=$(PREFIX)/../toolchain.cmake' -DMXE_PREFIX=$(PREFIX) -DMXE_TARGET=$(TARGET) '$($(PKG)_TEST_DIR)'
+    cd '$(1)'.test && '$(TARGET)-cmake' '-DCMAKE_TOOLCHAIN_FILE=$(PREFIX)/$(TARGET)/share/cmake/mxe-conf.cmake' '$($(PKG)_TEST_DIR)'
     $(MAKE) -C '$(1)'.test
     cp '$(1)'.test/mxe-cmake-qtuitools \
         '$(PREFIX)/$(TARGET)/bin/test-qttools'

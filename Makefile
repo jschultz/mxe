@@ -106,7 +106,9 @@ MXE_CONFIGURE_OPTS = \
         --disable-static --enable-shared ) \
     $(MXE_DISABLE_DOC_OPTS) \
     CC='$(if $(findstring $(TARGET), $(BUILD)),$(BUILD_CC),$(TARGET)-clang)' \
-    CXX='$(if $(findstring $(TARGET), $(BUILD)),$(BUILD_CXX),$(TARGET)-clang++)'
+    CXX='$(if $(findstring $(TARGET), $(BUILD)),$(BUILD_CXX),$(TARGET)-clang++)' \
+    CFLAGS='-I$(PREFIX)/$(TARGET)/include -mmacosx-version-min=$(shell eval `osxcross-conf`; echo \$OSXCROSS_OSX_VERSION_MIN)' \
+    LDFLAGS='-L$(PREFIX)/$(TARGET)/lib'
 
 PKG_CONFIGURE_OPTS = \
     $(_$(PKG)_CONFIGURE_OPTS) \

@@ -34,12 +34,13 @@ define $(PKG)_BUILD
         --without-p11-kit \
         --disable-silent-rules \
         CPPFLAGS='-DWINVER=0x0501 -DAI_ADDRCONFIG=0x0400 -DIPV6_V6ONLY=27' \
-        LIBS='-lws2_32' \
         ac_cv_prog_AR='$(TARGET)-ar'
     $(MAKE) -C '$(1)' -j '$(JOBS)' install
 
-    '$(TARGET)-gcc' \
+    '$(TARGET)-clang' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-gnutls.exe' \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-gnutls' \
+        '-I$(PREFIX)/$(TARGET)/include' \
+	'-L$(PREFIX)/$(TARGET)/lib' \
         `'$(TARGET)-pkg-config' gnutls --cflags --libs`
 endef

@@ -30,6 +30,6 @@ define $(PKG)_BUILD
 
     '$(TARGET)-clang' \
         -W -Wall -Werror -std=c99 -pedantic \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libpng.exe' \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libpng' \
         `'$(PREFIX)/$(TARGET)/bin/libpng-config' --static --cflags --libs --ldflags`
 endef

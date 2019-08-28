@@ -15,6 +15,9 @@ define $(PKG)_BUILD
     cd '$(BUILD_DIR)' && $(TARGET)-cmake '$(SOURCE_DIR)' \
         -DBUILD_PKGCONFIG_FILES=ON \
         -DBUILD_TESTING=OFF
-    $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)'
+    C_INCLUDE_PATH=$(PREFIX)/$(TARGET)/include   \
+    CPLUS_INCLUDE_PATH=$(PREFIX)/$(TARGET)/include \
+    LIBRARY_PATH=$(PREFIX)/$(TARGET)/lib \
+	$(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)'
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 endef

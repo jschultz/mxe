@@ -35,8 +35,10 @@ define $(PKG)_BUILD
     # TODO create pc files for iconv and unistring.
 
     # compile test
-    '$(TARGET)-gcc' \
+    '$(TARGET)-clang' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
+        '-I$(PREFIX)/$(TARGET)/include' \
+	'-L$(PREFIX)/$(TARGET)/lib' \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)' \
         `'$(TARGET)-pkg-config' $(PKG) --cflags --libs`
 endef

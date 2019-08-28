@@ -25,6 +25,6 @@ define $(PKG)_BUILD
         -W -Wall -Werror -ansi -pedantic \
 	-I$(PREFIX)/$(TARGET)/include \
 	-L$(PREFIX)/$(TARGET)/lib \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-jpeg.exe' \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-jpeg' \
         `'$(TARGET)-pkg-config' libjpeg --libs`
 endef

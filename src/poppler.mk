@@ -41,14 +41,18 @@ define $(PKG)_BUILD
         -DBUILD_SHARED_LIBS=$(CMAKE_SHARED_BOOL) \
         -DENABLE_RELOCATABLE=ON \
         -DEXTRA_WARN=OFF \
-        -DFONT_CONFIGURATION=win32 \
         '$(SOURCE_DIR)'
+    C_INCLUDE_PATH=$(PREFIX)/$(TARGET)/include   \
+    CPLUS_INCLUDE_PATH=$(PREFIX)/$(TARGET)/include \
+    LIBRARY_PATH=$(PREFIX)/$(TARGET)/lib \
     $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)'
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 
     # compile test
-    '$(TARGET)-g++' \
+    '$(TARGET)-clang++' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
+        '-I$(PREFIX)/$(TARGET)/include' \
+	'-L$(PREFIX)/$(TARGET)/lib' \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)' \
         `'$(TARGET)-pkg-config' poppler-cpp --cflags --libs`
 endef

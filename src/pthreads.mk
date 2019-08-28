@@ -21,12 +21,12 @@ define $(PKG)_BUILD
     # test pkg-config and libgomp
     '$(TARGET)-clang' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(TOP_DIR)/src/$(PKG)-test.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
+        '$(TOP_DIR)/src/$(PKG)-test.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)' \
         `'$(TARGET)-pkg-config' --libs pthreads`
 
 #     '$(TARGET)-clang' \
 #         -W -Wall -Werror -ansi -pedantic \
-#         '$(TOP_DIR)/src/$(PKG)-libgomp-test.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)-libgomp.exe' \
+#         '$(TOP_DIR)/src/$(PKG)-libgomp-test.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)-libgomp' \
 #         -fopenmp
 
     # test cmake

@@ -1,0 +1,31 @@
+--- a/tools/build/src/tools/clang-linux.jam	2019-08-28 08:29:28.000000000 +0800
++++ b/tools/build/src/tools/clang-linux.jam	2019-08-28 08:30:35.000000000 +0800
+@@ -61,6 +61,28 @@
+   common.handle-options clang-linux : $(condition) : $(command) : $(options) ;
+ 
+   gcc.init-link-flags clang-linux gnu $(condition) ;
++
++    local archiver = [ common.get-invocation-command clang
++        : [ feature.get-values <archiver> : $(options) ]
++        : $(bin)
++        : search-path ] ;
++    toolset.flags clang-linux.archive .AR $(condition) : $(archiver[1]) ;
++    if $(.debug-configuration)
++    {
++        ECHO notice: using gcc archiver :: $(condition) :: $(archiver[1]) ;
++    }
++
++    # - Ranlib.
++    local ranlib = [ common.get-invocation-command clang
++        : [ feature.get-values <ranlib> : $(options) ]
++        : $(bin)
++        : search-path ] ;
++    toolset.flags clang-linux.archive .RANLIB $(condition) : $(ranlib[1]) ;
++    if $(.debug-configuration)
++    {
++        ECHO notice: using gcc ranlib :: $(condition) :: $(ranlib[1]) ;
++    }
++
+ }
+ 
+ ###############################################################################

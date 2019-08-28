@@ -30,8 +30,11 @@ define $(PKG)_BUILD
     $(MAKE) -C '$(1)' -j '$(JOBS)' install $(MXE_DISABLE_DOCS)
     ln -sf '$(PREFIX)/$(TARGET)/bin/curl-config' '$(PREFIX)/bin/$(TARGET)-curl-config'
 
-    '$(TARGET)-gcc' \
+    '$(TARGET)-clang' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-curl.exe' \
-        `'$(TARGET)-pkg-config' libcurl --cflags --libs`
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-curl' \
+        '-I$(PREFIX)/$(TARGET)/include' \
+	'-L$(PREFIX)/$(TARGET)/lib' \
+        `'$(TARGET)-pkg-config' libcurl --cflags --libs` \
+        -framework CoreFoundation -framework Security
 endef

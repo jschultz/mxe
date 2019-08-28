@@ -4,25 +4,6 @@ Contains ad hoc patches for cross building.
 
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Mark Brand <mabrand@mabrand.nl>
-Date: Mon, 4 Feb 2013 16:11:12 +0100
-Subject: [PATCH 1/4] add missing private lib to pc file
-
-
-diff --git a/lib/gnutls.pc.in b/lib/gnutls.pc.in
-index 1111111..2222222 100644
---- a/lib/gnutls.pc.in
-+++ b/lib/gnutls.pc.in
-@@ -19,6 +19,6 @@ Description: Transport Security Layer implementation for the GNU system
- URL: https://www.gnutls.org/
- Version: @VERSION@
- Libs: -L${libdir} -lgnutls
--Libs.private: @LIBINTL@ @LIBSOCKET@ @INET_PTON_LIB@ @LIBPTHREAD@ @LIB_SELECT@ @TSS_LIBS@ @GMP_LIBS@ @LIBUNISTRING@ @LIBIDN2_LIBS@ @LIBATOMIC_LIBS@
-+Libs.private: @LIBINTL@ @LIBSOCKET@ @INET_PTON_LIB@ @LIBPTHREAD@ @LIB_SELECT@ @TSS_LIBS@ @GMP_LIBS@ @LIBUNISTRING@ @LIBIDN2_LIBS@ @LIBATOMIC_LIBS@ -lcrypt32
- @GNUTLS_REQUIRES_PRIVATE@
- Cflags: -I${includedir}
-
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Mark Brand <mabrand@mabrand.nl>
 Date: Mon, 24 Nov 2014 08:56:48 +0100
 Subject: [PATCH 2/4] windows build fix: ws2tcpip.h supplies inet_ntop
 
@@ -100,19 +81,6 @@ index 1111111..2222222 100644
  fi
  
  AM_CONDITIONAL(HAVE_LIBIDN2, test "$with_libidn2" != "no")
-diff --git a/lib/gnutls.pc.in b/lib/gnutls.pc.in
-index 1111111..2222222 100644
---- a/lib/gnutls.pc.in
-+++ b/lib/gnutls.pc.in
-@@ -19,6 +19,6 @@ Description: Transport Security Layer implementation for the GNU system
- URL: https://www.gnutls.org/
- Version: @VERSION@
- Libs: -L${libdir} -lgnutls
--Libs.private: @LIBINTL@ @LIBSOCKET@ @INET_PTON_LIB@ @LIBPTHREAD@ @LIB_SELECT@ @TSS_LIBS@ @GMP_LIBS@ @LIBUNISTRING@ @LIBIDN2_LIBS@ @LIBATOMIC_LIBS@ -lcrypt32
-+Libs.private: @LIBINTL@ @LIBSOCKET@ @INET_PTON_LIB@ @LIBPTHREAD@ @LIB_SELECT@ @TSS_LIBS@ @GMP_LIBS@ @LIBUNISTRING@ @LIBATOMIC_LIBS@ -lcrypt32
- @GNUTLS_REQUIRES_PRIVATE@
- Cflags: -I${includedir}
-
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Mark Brand <mabrand@mabrand.nl>
 Date: Thu, 6 Dec 2018 10:36:30 +0100

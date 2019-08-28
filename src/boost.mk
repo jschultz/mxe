@@ -27,7 +27,7 @@ define $(PKG)_BUILD
     rm -f "$(PREFIX)/$(TARGET)/lib/libboost"*
 
     # create user-config
-    echo 'using gcc : mxe : $(TARGET)-g++ : <rc>$(TARGET)-windres <archiver>$(TARGET)-ar <ranlib>$(TARGET)-ranlib ;' > '$(1)/user-config.jam'
+    echo 'using clang : : $(TARGET)-clang++ : <archiver>$(TARGET)-ar <ranlib>$(TARGET)-ranlib ;' > '$(1)/user-config.jam'
 
     # compile boost build (b2)
     cd '$(1)/tools/build/' && ./bootstrap.sh
@@ -40,16 +40,15 @@ define $(PKG)_BUILD
         -j '$(JOBS)' \
         --ignore-site-config \
         --user-config=user-config.jam \
-        abi=ms \
+        abi=sysv \
         address-model=$(BITS) \
         architecture=x86 \
-        binary-format=pe \
+        binary-format=mach-o \
         link=$(if $(BUILD_STATIC),static,shared) \
-        target-os=windows \
-        threadapi=win32 \
         threading=multi \
+        target-os=darwin \
         variant=release \
-        toolset=gcc-mxe \
+        toolset=clang-linux \
         --layout=tagged \
         --disable-icu \
         --without-mpi \
@@ -65,18 +64,18 @@ define $(PKG)_BUILD
     $(if $(BUILD_SHARED), \
         mv -fv '$(PREFIX)/$(TARGET)/lib/'libboost_*.dll '$(PREFIX)/$(TARGET)/bin/')
 
-    # setup cmake toolchain
-    echo 'set(Boost_THREADAPI "win32")' > '$(CMAKE_TOOLCHAIN_DIR)/$(PKG).cmake'
-
-    '$(TARGET)-g++' \
+    '$(TARGET)-clang++' \
         -W -Wall -Werror -ansi -U__STRICT_ANSI__ -pedantic \
-        '$(PWD)/src/$(PKG)-test.cpp' -o '$(PREFIX)/$(TARGET)/bin/test-boost.exe' \
+        -std=c++11 \
+        '-I$(PREFIX)/$(TARGET)/include' \
+        '-L$(PREFIX)/$(TARGET)/lib' \
+        '$(PWD)/src/$(PKG)-test.cpp' -o '$(PREFIX)/$(TARGET)/bin/test-boost' \
         -DBOOST_THREAD_USE_LIB \
         -lboost_serialization-mt \
-        -lboost_thread_win32-mt \
         -lboost_system-mt \
         -lboost_chrono-mt \
-        -lboost_context-mt
+        -lboost_context-mt \
+        -lboost_thread-mt
 
     # test cmake
     mkdir '$(1).test-cmake'
@@ -84,7 +83,8 @@ define $(PKG)_BUILD
         -DPKG=$(PKG) \
         -DPKG_VERSION=$($(PKG)_VERSION) \
         '$(PWD)/src/cmake/test'
-    $(MAKE) -C '$(1).test-cmake' -j 1 install
+    CPLUS_INCLUDE_PATH='$(PREFIX)/$(TARGET)/include' \
+        $(MAKE) -C '$(1).test-cmake' -j 1 install
 endef
 
 define $(PKG)_BUILD_$(BUILD)

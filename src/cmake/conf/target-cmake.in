@@ -22,6 +22,7 @@ else
         echo '== Adding "-DCMAKE_BUILD_TYPE=Release"'
         set -- "-DCMAKE_BUILD_TYPE=Release" "$@"
     fi
+    eval "`@TARGET@-osxcross-conf`"
     exec "@PREFIX@/@BUILD@/bin/cmake" \
               -DCMAKE_TOOLCHAIN_FILE="@CMAKE_TOOLCHAIN_FILE@" \
               `eval echo -DCMAKE_POLICY_DEFAULT_CMP{$POLICIES}=NEW` \

@@ -1,0 +1,47 @@
+--- a/lib/includes/gnutls/gnutls.h.in	2019-08-13 13:35:54.000000000 +0800
++++ b/lib/includes/gnutls/gnutls.h.in	2019-08-13 13:30:42.000000000 +0800
+@@ -315,7 +315,7 @@
+ 	GNUTLS_MAC_UMAC_96 = 201,
+ 	GNUTLS_MAC_UMAC_128 = 202,
+ 	GNUTLS_MAC_AES_CMAC_128 = 203,
+-	GNUTLS_MAC_AES_CMAC_256 = 204,
++	GNUTLS_MAC_AES_CMAC_256 = 204
+ } gnutls_mac_algorithm_t;
+ 
+ /**
+@@ -484,7 +484,7 @@
+ #define GNUTLS_FORCE_CLIENT_CERT (1<<9)
+ #define GNUTLS_NO_TICKETS (1<<10)
+ #define GNUTLS_ENABLE_CERT_TYPE_NEG 0
+-	// Here for compatibility reasons
++	/* Here for compatibility reasons */
+
+ /**
+  * gnutls_alert_level_t:
+@@ -621,7 +621,7 @@
+ 	GNUTLS_HANDSHAKE_KEY_UPDATE = 24,
+ 	GNUTLS_HANDSHAKE_CHANGE_CIPHER_SPEC = 254,
+ 	GNUTLS_HANDSHAKE_CLIENT_HELLO_V2 = 1024,
+-	GNUTLS_HANDSHAKE_HELLO_RETRY_REQUEST = 1025,
++	GNUTLS_HANDSHAKE_HELLO_RETRY_REQUEST = 1025
+ } gnutls_handshake_description_t;
+ 
+ #define GNUTLS_HANDSHAKE_ANY ((unsigned int)-1)
+@@ -1031,7 +1031,7 @@
+ 	GNUTLS_GROUP_FFDHE4096,
+ 	GNUTLS_GROUP_FFDHE8192,
+ 	GNUTLS_GROUP_FFDHE6144,
+-	GNUTLS_GROUP_MAX = GNUTLS_GROUP_FFDHE6144,
++	GNUTLS_GROUP_MAX = GNUTLS_GROUP_FFDHE6144
+ } gnutls_group_t;
+ 
+ /* macros to allow specifying a specific curve in gnutls_privkey_generate()
+@@ -1558,7 +1558,7 @@
+  * Enumeration of different supplemental data types (RFC 4680).
+  */
+ typedef enum {
+-	GNUTLS_SUPPLEMENTAL_UNKNOWN = 0,
++	GNUTLS_SUPPLEMENTAL_UNKNOWN = 0
+ } gnutls_supplemental_data_format_type_t;
+
+ const char

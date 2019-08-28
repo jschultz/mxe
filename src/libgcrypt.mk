@@ -37,9 +37,11 @@ define $(PKG)_MAKE
      echo 'Cflags: ' "`$(TARGET)-libgcrypt-config --cflags`";) \
      > '$(PREFIX)/$(TARGET)/lib/pkgconfig/$(PKG).pc'
 
-    '$(TARGET)-gcc' \
+    '$(TARGET)-clang' \
         -W -Wall -Werror -ansi -pedantic \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libgcrypt.exe' \
+        '-I$(PREFIX)/$(TARGET)/include' \
+        '-L$(PREFIX)/$(TARGET)/lib' \
+        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-libgcrypt' \
         `$(TARGET)-pkg-config libgcrypt --cflags --libs`
 endef
 
