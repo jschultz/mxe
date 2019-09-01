@@ -25,7 +25,7 @@ endif()
 # Pick up OSXCross stuff
 set(OSXCROSS_HOST "@TARGET@")
 include("$ENV{HOME}/osxcross/target/toolchain.cmake")
-set(CMAKE_FIND_ROOT_PATH @PREFIX@/@TARGET@ "${OSXCROSS_SDK}")
+set(CMAKE_FIND_ROOT_PATH ${FIND_ROOT_PATH_EXTRA} @PREFIX@/@TARGET@ "${OSXCROSS_SDK}")
 
 # Use CACHE variables to allow user setting with `-D`
 # Use CACHE FORCE in rare cases of misconfigured CMakeLists.txt

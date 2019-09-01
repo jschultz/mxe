@@ -18,8 +18,9 @@ define $(PKG)_BUILD
     $(MAKE) -C '$(BUILD_DIR)' -j 1 install
 
     # compile test
-    '$(TARGET)-gcc' \
+    '$(TARGET)-clang' \
         -W -Wall -pedantic \
-        '$(SOURCE_DIR)/tests/prof_qrencode.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG).exe' \
+	-L$(PREFIX)/$(TARGET)/lib \
+        '$(SOURCE_DIR)/tests/prof_qrencode.c' -o '$(PREFIX)/$(TARGET)/bin/test-$(PKG)' \
         `'$(TARGET)-pkg-config' $(PKG) --cflags --libs`
 endef

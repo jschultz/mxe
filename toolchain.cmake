@@ -33,6 +33,7 @@ endif()
 
 # where is the target environment
 set(CMAKE_FIND_ROOT_PATH
+  "${CMAKE_FIND_ROOT_PATH}"
   "${OSXCROSS_SDK}"
   "${MXE_PREFIX}/${MXE_TARGET}")
 
