@@ -107,7 +107,7 @@ MXE_CONFIGURE_OPTS = \
     $(MXE_DISABLE_DOC_OPTS) \
     CC='$(if $(findstring $(TARGET), $(BUILD)),$(BUILD_CC),$(TARGET)-clang)' \
     CXX='$(if $(findstring $(TARGET), $(BUILD)),$(BUILD_CXX),$(TARGET)-clang++)' \
-    CFLAGS='-I$(PREFIX)/$(TARGET)/include $(ifeq ($(findstring darwin,$(BUILD)),-mmacosx-version-min=$(shell eval `osxcross-conf`; echo $$OSXCROSS_OSX_VERSION_MIN),))' \
+    CFLAGS='-I$(PREFIX)/$(TARGET)/include $(ifeq ($(findstring darwin,$(TARGET)),-mmacosx-version-min=$(shell eval `osxcross-conf`; echo $$OSXCROSS_OSX_VERSION_MIN),))' \
     LDFLAGS='-L$(PREFIX)/$(TARGET)/lib'
 
 PKG_CONFIGURE_OPTS = \
